@@ -1,13 +1,42 @@
 package com.haruma.app.model;
 
 public class User {
+    private int userId;
+    private String email;
+    private String password;
+    private UserDetail userDetail;
 
-    public User() {
+    public UserDetail getUserDetail() {
+        return userDetail;
+    }
+
+    public void setUserDetail(UserDetail userDetail) {
+        this.userDetail = userDetail;
+        this.getUserDetail().setUser(this);
+    }
+
+    public User(int userId, String email, String password) {
+        this.userId = userId;
+        this.email = email;
+        this.password = password;
+        this.userDetail = null;
     }
 
     public User(String email, String password) {
         this.email = email;
         this.password = password;
+        this.userDetail = null;
+    }
+
+    public User() {
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getEmail() {
@@ -26,8 +55,5 @@ public class User {
         this.password = password;
     }
 
-    private String email;
-
-    private String password;
-
 }
+
