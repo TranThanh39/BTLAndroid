@@ -26,7 +26,6 @@ public class RootActivity extends AppCompatActivity {
             return insets;
         });
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-        // Set the default fragment (e.g., Home)
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container, new HomeFragment()) // Fragment container
