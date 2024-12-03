@@ -210,5 +210,56 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return user;
     }
 
+    public boolean registerUser(String email, String password, String fullName, String className, String phoneNumber) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues userValues = new ContentValues();
+        userValues.put(USER_EMAIL, email);
+        userValues.put(USER_PASSWORD, password);
+        long userId = db.insert(TABLE_USER, null, userValues);
+        if (userId == -1) {
+            db.close();
+            return false;
+        }
+        ContentValues userDetailValues = new ContentValues();
+        userDetailValues.put(USER_ID, userId); // Foreign key
+        userDetailValues.put(USERDETAIL_FULLNAME, fullName);
+        userDetailValues.put(USERDETAIL_CLASS, className);
+        userDetailValues.put(USERDETAIL_PHONE, phoneNumber);
+        long result = db.insert(TABLE_USER_DETAIL, null, userDetailValues);
+        db.close();
+        return result != -1;
+    }
+
+    public User loginUser(String email, String password) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT u." + USER_ID + ", u." + USER_EMAIL + ", u." + USER_PASSWORD + ", "
+                + "ud." + USERDETAIL_FULLNAME + ", ud." + USERDETAIL_CLASS + ", ud." + USERDETAIL_PHONE
+                + " FROM " + TABLE_USER + " u "
+                + " JOIN " + TABLE_USER_DETAIL + " ud ON u." + USER_ID + " = ud." + USER_ID
+                + " WHERE u." + USER_EMAIL + " = ? AND u." + USER_PASSWORD + " = ?";
+
+        Cursor cursor = db.rawQuery(query, new String[]{email, password});
+        User user = null;
+        if (cursor.moveToFirst()) {
+            user = new User(
+                    cursor.getInt(cursor.getColumnIndexOrThrow(USER_ID)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(USER_EMAIL)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(USER_PASSWORD))
+            );
+            UserDetail userDetail = new UserDetail(
+                    cursor.getInt(cursor.getColumnIndexOrThrow(USER_ID)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(USERDETAIL_FULLNAME)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(USERDETAIL_CLASS)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(USERDETAIL_PHONE))
+            );
+            user.setUserDetail(userDetail);
+        }
+        cursor.close();
+        db.close();
+        return user;
+    }
+
+
+
 }
 

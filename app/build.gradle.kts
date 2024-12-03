@@ -52,6 +52,9 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     implementation(libs.material.v190)
+    implementation(libs.gson)
+    implementation(libs.activity.v160)
+    implementation(libs.activity.ktx)
 
 
 }
