@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.util.Log;
 
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.AndroidViewModel;
@@ -20,15 +21,16 @@ import com.haruma.app.service.StorageHelper;
 import com.haruma.app.service.UriHelper;
 
 import java.util.List;
+import java.util.Objects;
 
 public class BackupDiaryViewModel extends AndroidViewModel {
 
-    private DatabaseHelper databaseHelper;
-    private MutableLiveData<List<Diary>> diariesData = new MutableLiveData<>();
+    private final DatabaseHelper databaseHelper;
+    private final MutableLiveData<List<Diary>> diariesData = new MutableLiveData<>();
 
-    private MutableLiveData<String> permissionStatus = new MutableLiveData<>();
+    private final MutableLiveData<String> permissionStatus = new MutableLiveData<>();
 
-    private Context context;
+    private final Context context;
 
     public BackupDiaryViewModel(Application application) {
         super(application);
@@ -44,7 +46,7 @@ public class BackupDiaryViewModel extends AndroidViewModel {
 
     public void readJson(Context context, Uri fileUri) {
         String filePath = UriHelper.resolveUri(context, fileUri);
-        JsonHelper.readJson(filePath, diariesData.getValue().getClass());
+        JsonHelper.readJson(filePath, Objects.requireNonNull(diariesData.getValue()).getClass());
     }
 
     public void writeJson(Context context, Uri fileUri) {
