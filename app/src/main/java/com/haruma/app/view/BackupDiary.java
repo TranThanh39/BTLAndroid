@@ -14,20 +14,28 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.haruma.app.R;
+import com.haruma.app.databinding.ActivityAddBinding;
+import com.haruma.app.databinding.ActivityBackupDiaryBinding;
 import com.haruma.app.service.FileHelper;
 import com.haruma.app.service.StorageHelper;
+import com.haruma.app.viewmodel.AddViewModel;
 import com.haruma.app.viewmodel.BackupDiaryViewModel;
 
-public class BackupDiary extends AppCompatActivity {
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
-    private BackupDiaryViewModel viewModel;
+public class BackupDiary extends AppCompatActivity {
     private ActivityResultLauncher<Intent> pickFileLauncher;
     private ActivityResultLauncher<Intent> saveFileLauncher;
+    private ActivityResultLauncher<Intent> storagePermissionLauncher;
 
     private TextView txtPermission;
 
@@ -35,26 +43,39 @@ public class BackupDiary extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_backup_diary);
-        viewModel = new ViewModelProvider(this).get(BackupDiaryViewModel.class);
+        ActivityBackupDiaryBinding mainBinding = DataBindingUtil.setContentView(this,
+                R.layout.activity_backup_diary);
+        BackupDiaryViewModel viewModel = new BackupDiaryViewModel(getApplication());
+        mainBinding.setBackupDiaryViewModel(viewModel);
         pickFileLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent data = result.getData();
                         if (data != null) {
-                            Uri fileUri = data.getData();
-                            if (fileUri != null) {
-                                viewModel.readJson(this, fileUri);
-                            }
+                            new AlertDialog.Builder(this)
+                                    .setMessage("Nếu bạn xác nhận, toàn bộ nhật ký hiện tại sẽ bị xóa sổ và tạo lại nhật kí mới")
+                                    .setTitle("Bạn có muốn sửa toàn bộ nhật ký?")
+                                    .setPositiveButton("Có", (dialog, which) -> {
+                                        Uri fileUri = data.getData();
+                                        if (fileUri != null) {
+                                            viewModel.readJson(this, fileUri);
+                                        }
+                                        dialog.dismiss();
+                                    })
+                                    .setNegativeButton("Không", (dialog, which) -> {
+                                        dialog.dismiss();
+                                    })
+                                    .show();
                         }
                     }
-                });
+                }
+        );
         txtPermission = findViewById(R.id.txtPermission);
-        BackupDiaryViewModel backupDiaryViewModel = new ViewModelProvider(this).get(BackupDiaryViewModel.class);
-        backupDiaryViewModel.getPermissionStatus().observe(this, status -> {
+        viewModel.getPermissionStatus().observe(this, status -> {
             txtPermission.setText(status);
         });
-        backupDiaryViewModel.checkPermissions();
+        viewModel.checkPermissions();
 
         saveFileLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -72,11 +93,25 @@ public class BackupDiary extends AppCompatActivity {
         Button btnRequest = findViewById(R.id.btnRequest);
         btnRequest.setOnClickListener(v -> {
             try {
-                StorageHelper.requestStoragePermission(this);
+                StorageHelper.requestStoragePermission(this, storagePermissionLauncher);
             } catch (Exception e) {
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
+        storagePermissionLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    try {
+                        if (StorageHelper.checkStoragePermission(this)) {
+                            Toast.makeText(this, "Đã cấp quyền", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(this, "Quyền đã bị từ chối", Toast.LENGTH_SHORT).show();
+                        }
+                        viewModel.checkPermissions();
+                    } catch (Exception e) {
+                        Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
         Button pickFileButton = findViewById(R.id.btnPick);
         Button saveFileButton = findViewById(R.id.btnSave);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -85,7 +120,6 @@ public class BackupDiary extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_back_arrow);
-
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             pickFileButton.setOnClickListener(v -> pickFileLauncher.launch(FileHelper.pickFile()));

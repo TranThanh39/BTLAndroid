@@ -1,41 +1,39 @@
 package com.haruma.app.service;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.Settings;
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
+import com.haruma.app.model.Callback;
 
 public class StorageHelper {
 
-    private static final int REQUEST_EXTERNAL_STORAGE_PERMISSION = 1;
-
-    public static boolean requestStoragePermission(Activity activity) {
+    public static void requestStoragePermission(Activity activity, ActivityResultLauncher<Intent> resultLauncher) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
             ActivityCompat.requestPermissions(
                     activity,
                     new String[]{
-                            Manifest.permission.READ_EXTERNAL_STORAGE,
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                            android.Manifest.permission.READ_EXTERNAL_STORAGE,
+                            android.Manifest.permission.WRITE_EXTERNAL_STORAGE
                     },
-                    REQUEST_EXTERNAL_STORAGE_PERMISSION
+                    1
             );
         } else {
             Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION,
-                    Uri.parse("package:" + activity.getPackageName()));
-            activity.startActivityForResult(intent, REQUEST_EXTERNAL_STORAGE_PERMISSION);
+                    android.net.Uri.parse("package:" + activity.getPackageName()));
+            resultLauncher.launch(intent);
         }
-        return checkStoragePermission(activity);
     }
 
     public static boolean checkStoragePermission(Activity activity) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
-            return ActivityCompat.checkSelfPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-                    && ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+            return ContextCompat.checkSelfPermission(activity, android.Manifest.permission.READ_EXTERNAL_STORAGE) == android.content.pm.PackageManager.PERMISSION_GRANTED
+                    && ContextCompat.checkSelfPermission(activity, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == android.content.pm.PackageManager.PERMISSION_GRANTED;
         } else {
             return Environment.isExternalStorageManager();
         }

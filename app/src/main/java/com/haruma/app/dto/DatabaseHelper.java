@@ -133,8 +133,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("note", note);
         values.put("startTime", startTime);
         values.put("endTime", endTime);
-        values.put("userId", userId);  // Link to User
-
+        values.put("userId", userId);
         db.insert(TABLE_DIARY, null, values);
         db.close();
     }
@@ -259,7 +258,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return user;
     }
 
-
+    public void clearDiary(){
+        List<Diary> data = this.getAllDiaries();
+        for (Diary d : data) {
+            this.deleteDiary(d.getDiaryId());
+        }
+    }
 
 }
 
