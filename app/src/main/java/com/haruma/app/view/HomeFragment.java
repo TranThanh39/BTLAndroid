@@ -1,5 +1,6 @@
 package com.haruma.app.view;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.haruma.app.R;
@@ -35,8 +37,31 @@ public class HomeFragment extends Fragment {
 
         });
         myCallback.put("onDelete", (id) -> {
-
+            // Hiển thị hộp thoại xác nhận
+            new AlertDialog.Builder(getContext())
+                    .setTitle("Xác nhận xóa")
+                    .setMessage("Bạn có chắc chắn muốn xóa nhật ký này không?")
+                    .setPositiveButton("Xác nhận", (dialog, which) -> {
+                        DatabaseHelper dbHelper = new DatabaseHelper(getContext());
+                        try {
+                            dbHelper.deleteDiary(id);
+                            // Cập nhật lại danh sách sau khi xóa
+                            List<Diary> updatedList = dbHelper.getAllDiaries();
+                            CustomAdapter adapter = AdapterSessionManager.getInstance().getCustomAdapter();
+                            if (adapter != null) {
+                                adapter.setList(updatedList);
+                            }
+                            Toast.makeText(getContext(), "Xóa thành công!", Toast.LENGTH_SHORT).show();
+                        } catch (Exception e) {
+                            Toast.makeText(getContext(), "Lỗi khi xóa: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .setNegativeButton("Hủy", (dialog, which) -> {
+                        dialog.dismiss();
+                    })
+                    .show();
         });
+
         myCallback.put("onDetail", (id) -> {
 
         });
