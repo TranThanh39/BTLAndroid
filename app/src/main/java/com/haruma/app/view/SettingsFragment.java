@@ -18,8 +18,7 @@ import com.haruma.app.viewmodel.SettingsViewModel;
 public class SettingsFragment extends Fragment {
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_settings, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         FragmentSettingsBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_settings, container, false);
         SettingsViewModel settingsViewModel = new ViewModelProvider(this).get(SettingsViewModel.class);
         binding.setSettingsViewModel(settingsViewModel);

@@ -2,6 +2,7 @@ package com.haruma.app.viewmodel;
 
 import android.app.Application;
 import android.content.Intent;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.BaseObservable;
@@ -113,6 +114,7 @@ public class SettingsViewModel extends AndroidViewModel {
         Intent intent = new Intent(getApplication(), MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         getApplication().startActivity(intent);
+        Toast.makeText(getApplication().getApplicationContext(), "Đăng xuất thành công", Toast.LENGTH_LONG).show();
     }
 
     public void onClickTroGiup() {
