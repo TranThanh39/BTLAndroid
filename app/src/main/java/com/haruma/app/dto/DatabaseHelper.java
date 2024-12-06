@@ -179,6 +179,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return diaryList;
     }
 
+    public Diary findDiaryById(int diaryId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Diary diary = null;
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_DIARY + " WHERE diaryId = ?",
+                new String[]{String.valueOf(diaryId)});
+
+        if (cursor.moveToFirst()) {
+            diary = new Diary(
+                    cursor.getInt(cursor.getColumnIndexOrThrow("diaryId")),
+                    cursor.getString(cursor.getColumnIndexOrThrow("name")),
+                    cursor.getString(cursor.getColumnIndexOrThrow("day")),
+                    cursor.getString(cursor.getColumnIndexOrThrow("note")),
+                    cursor.getString(cursor.getColumnIndexOrThrow("startTime")),
+                    cursor.getString(cursor.getColumnIndexOrThrow("endTime")),
+                    cursor.getInt(cursor.getColumnIndexOrThrow("userId"))
+            );
+        }
+
+        cursor.close();
+        db.close();
+        return diary;
+    }
+
+
     public User getUserById(int userId) {
         SQLiteDatabase db = this.getReadableDatabase();
         User user = null;

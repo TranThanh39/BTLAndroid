@@ -34,7 +34,9 @@ public class HomeFragment extends Fragment {
         List<Diary> myList = db.getAllDiaries();
         Map<String, ChangeCallback> myCallback = new HashMap<>();
         myCallback.put("onChange", (id) -> {
-
+            Intent intent = new Intent(rootView.getContext(), EditActivity.class);
+            intent.putExtra("id", id);
+            startActivity(intent);
         });
         myCallback.put("onDelete", (id) -> {
             new AlertDialog.Builder(getContext())
@@ -64,7 +66,9 @@ public class HomeFragment extends Fragment {
         });
 
         myCallback.put("onDetail", (id) -> {
-
+            Intent intent = new Intent(rootView.getContext(), DetailActivity.class);
+            intent.putExtra("id", id);
+            startActivity(intent);
         });
         CustomAdapter adapter = new CustomAdapter(rootView.getContext(), R.layout.diary_list_tile, myList, myCallback);
         listView.setAdapter(adapter);

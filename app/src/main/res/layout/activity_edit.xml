@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".AddActivity">
+    tools:context=".view.EditActivity">
 
     <data>
         <variable
-            name="addViewModel"
-            type="com.haruma.app.viewmodel.AddViewModel" />
+            name="editViewModel"
+            type="com.haruma.app.viewmodel.EditViewModel" />
     </data>
 
     <LinearLayout
@@ -43,6 +43,30 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:padding="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="8dp"
+                    >
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Mã: "
+                        android:layout_marginEnd="8dp" />
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@{editViewModel.id}"
+                        android:enabled="false"
+                        android:hint="Nhập tên hoạt động" />
+                </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -61,7 +85,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@={addViewModel.name}"
+                        android:text="@={editViewModel.name}"
                         android:hint="Nhập tên hoạt động" />
                 </LinearLayout>
 
@@ -82,7 +106,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@={addViewModel.date}"
+                        android:text="@={editViewModel.date}"
                         android:hint="Ngày (DD/MM/YYYY)"
                         android:inputType="date" />
                 </LinearLayout>
@@ -104,7 +128,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@={addViewModel.note}"
+                        android:text="@={editViewModel.note}"
                         android:hint="Nhập ghi chú" />
                 </LinearLayout>
 
@@ -126,7 +150,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@={addViewModel.startTime}"
+                        android:text="@={editViewModel.startTime}"
                         android:hint="Bắt đầu (HH:mm)"
                         android:inputType="time" />
                 </LinearLayout>
@@ -148,7 +172,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@={addViewModel.endTime}"
+                        android:text="@={editViewModel.endTime}"
                         android:hint="Kết thúc (HH:mm)"
                         android:inputType="time" />
                 </LinearLayout>
@@ -157,14 +181,14 @@
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:onClick="@{() -> addViewModel.onAdd()}"
-                    android:text="Thêm hoạt động"
+                    android:onClick="@{() -> editViewModel.onEdit()}"
+                    android:text="Sửa hoạt động"
                     android:layout_marginTop="16dp" />
 
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:onClick="@{() -> addViewModel.onCancel()}"
+                    android:onClick="@{() -> editViewModel.onCancel()}"
                     android:text="Hủy"
                     android:layout_marginTop="8dp" />
             </LinearLayout>

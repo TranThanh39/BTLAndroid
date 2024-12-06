@@ -1,7 +1,5 @@
 package com.haruma.app.model;
 
-import java.util.Date;
-
 public class Diary {
     private int diaryId;
     private String name;

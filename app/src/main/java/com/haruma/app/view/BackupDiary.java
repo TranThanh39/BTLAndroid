@@ -25,19 +25,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.haruma.app.R;
-import com.haruma.app.databinding.ActivityAddBinding;
 import com.haruma.app.databinding.ActivityBackupDiaryBinding;
 import com.haruma.app.service.FileHelper;
 import com.haruma.app.service.StorageHelper;
-import com.haruma.app.viewmodel.AddViewModel;
 import com.haruma.app.viewmodel.BackupDiaryViewModel;
-
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
 public class BackupDiary extends AppCompatActivity {
     private ActivityResultLauncher<Intent> pickFileLauncher;
@@ -54,6 +47,7 @@ public class BackupDiary extends AppCompatActivity {
                 R.layout.activity_backup_diary);
         BackupDiaryViewModel viewModel = new BackupDiaryViewModel(getApplication());
         mainBinding.setBackupDiaryViewModel(viewModel);
+        mainBinding.setLifecycleOwner(this);
         pickFileLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {

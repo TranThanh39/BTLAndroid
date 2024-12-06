@@ -34,6 +34,7 @@ public class BackupDiaryViewModel extends AndroidViewModel {
     private final Context context;
 
 
+
     public BackupDiaryViewModel(Application application) {
         super(application);
         this.context = application.getApplicationContext();
@@ -69,8 +70,14 @@ public class BackupDiaryViewModel extends AndroidViewModel {
         return diaryList;
     }
 
+
     public void writeJson(Context context, Uri fileUri) {
-        JsonHelper.writeJson(UriHelper.resolveUri(context, fileUri), databaseHelper.getAllDiaries());
+        try {
+            JsonHelper.writeJson(UriHelper.resolveUri(context, fileUri), databaseHelper.getAllDiaries());
+            Toast.makeText(this.context, "Sao lưu dữ liệu thành công", Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            Toast.makeText(this.context, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
     }
 
     public void onChangeDiary(List<Diary> diaries) {
