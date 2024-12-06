@@ -114,8 +114,8 @@ public class DashboardFragment extends Fragment {
 
     @SuppressLint("SetTextI18n")
     public void showListDiary(int mode){
-        List<Diary> di2 = new ArrayList<Diary>();
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        List<Diary> di2 = new ArrayList<>();
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         if (mode==0){
             Date current = new Date();
 
