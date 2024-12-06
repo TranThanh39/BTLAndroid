@@ -2,9 +2,15 @@ package com.haruma.app.view;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
@@ -17,6 +23,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.lifecycle.ViewModelProvider;
@@ -119,7 +126,14 @@ public class BackupDiary extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_back_arrow);
+            Drawable backArrow = ContextCompat.getDrawable(this, R.drawable.ic_back_arrow);
+            if (backArrow != null) {
+                backArrow.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+                actionBar.setHomeAsUpIndicator(backArrow);
+            }
+            SpannableString title = new SpannableString("Sao lưu dữ liệu");
+            title.setSpan(new ForegroundColorSpan(Color.WHITE), 0, title.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            actionBar.setTitle(title);
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             pickFileButton.setOnClickListener(v -> pickFileLauncher.launch(FileHelper.pickFile()));

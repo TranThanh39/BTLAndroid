@@ -1,26 +1,29 @@
 package com.haruma.app.view;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.view.View;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.view.MenuItem;
 import android.os.Bundle;
-import android.widget.Toast;
+import android.graphics.PorterDuff;
 
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 
-import com.haruma.app.MainActivity;
 import com.haruma.app.R;
-import com.haruma.app.adapter.CustomAdapter;
 import com.haruma.app.databinding.ActivityAddBinding;
-import com.haruma.app.databinding.ActivityMainBinding;
 import com.haruma.app.dto.AdapterSessionManager;
 import com.haruma.app.dto.DatabaseHelper;
 import com.haruma.app.model.Callback;
 import com.haruma.app.model.Diary;
 import com.haruma.app.viewmodel.AddViewModel;
-import com.haruma.app.viewmodel.LoginViewModel;
 
 import java.util.HashMap;
 import java.util.List;
@@ -41,10 +44,34 @@ public class AddActivity extends AppCompatActivity {
             AdapterSessionManager.getInstance().getCustomAdapter().notifyDataSetChanged();
             finish();
         });
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            Drawable backArrow = ContextCompat.getDrawable(this, R.drawable.ic_back_arrow);
+            if (backArrow != null) {
+                backArrow.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+                actionBar.setHomeAsUpIndicator(backArrow);
+            }
+            SpannableString title = new SpannableString("Thêm hoạt động");
+            title.setSpan(new ForegroundColorSpan(Color.WHITE), 0, title.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+            actionBar.setTitle(title);
+        }
         callback.put("onCancel", () -> {
             finish();
         });
         AddViewModel addViewModel = new AddViewModel(this, callback);
         mainBinding.setAddViewModel(addViewModel);
     }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }
