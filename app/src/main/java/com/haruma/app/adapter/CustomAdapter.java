@@ -1,5 +1,6 @@
 package com.haruma.app.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +38,7 @@ public class CustomAdapter extends ArrayAdapter<Diary> {
         this.addAll(list);
     }
 
+    @SuppressLint("SetTextI18n")
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -44,7 +46,6 @@ public class CustomAdapter extends ArrayAdapter<Diary> {
             convertView = LayoutInflater.from(mContext).inflate(mResource, parent, false);
         }
         Diary diary = getItem(position);
-        TextView mahd = convertView.findViewById(R.id.tvMahd);
         TextView tenhd = convertView.findViewById(R.id.tvTenhd);
         TextView ngay = convertView.findViewById(R.id.tvNgay);
         TextView ngaybd = convertView.findViewById(R.id.tvNgaybd);
@@ -69,13 +70,11 @@ public class CustomAdapter extends ArrayAdapter<Diary> {
             popupMenu.show();
         });
         if (diary != null) {
-            mahd.setText(String.valueOf(diary.getDiaryId()));
             tenhd.setText(diary.getName());
             ngay.setText(diary.getDay());
-            ngaybd.setText(diary.getStartTime());
-            ngaykt.setText(diary.getEndTime());
+            ngaybd.setText(String.format("%sh", diary.getStartTime()));
+            ngaykt.setText(String.format("%sh", diary.getEndTime()));
         }
-
         return convertView;
     }
 }

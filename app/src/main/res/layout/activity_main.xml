@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
     tools:context=".MainActivity">
     <data>
@@ -13,62 +13,91 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:orientation="vertical" >
-
-        <TableLayout
-            android:stretchColumns="*"
+        android:orientation="vertical"
+        android:padding="16dp"
+        >
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TableRow
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="8dp">
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="16dp">
+
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Email: " />
+                    android:textAlignment="center"
+                    android:textColor="@color/cardview_dark_background"
+                    android:textStyle="bold"
+                    android:layout_marginTop="12dp"
+                    android:textSize="24dp"
+                    android:text="Đăng nhập" />
 
-                <EditText
-                    android:layout_width="wrap_content"
+                <TableLayout
+                    android:stretchColumns="*"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Email: " />
+
+                        <EditText
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:text="@={LoginViewModel.email}"
+                            android:inputType="textEmailAddress" />
+                    </TableRow>
+
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Mật khẩu: " />
+
+                        <EditText
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:text="@={LoginViewModel.password}"
+                            android:inputType="textPassword"
+                            android:password="true"
+                            tools:ignore="Deprecated" />
+
+                    </TableRow>
+
+                </TableLayout>
+
+                <Button
+                    android:layout_marginTop="15dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:text="@={LoginViewModel.email}"
-                    android:inputType="textEmailAddress" />
-            </TableRow>
+                    android:onClick="@{() -> LoginViewModel.onLogin()}"
+                    android:text="Đăng nhập" />
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:layout_width="wrap_content"
+                <Button
+                    android:layout_marginTop="8dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Mật khẩu: " />
-
-                <EditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:text="@={LoginViewModel.password}"
-                    android:inputType="textPassword"
-                    android:password="true"
-                    tools:ignore="Deprecated" />
-
-            </TableRow>
-
-        </TableLayout>
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="@{() -> LoginViewModel.onLogin()}"
-            android:text="Đăng nhập" />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="@{() -> LoginViewModel.onRegister()}"
-            android:text="Đăng ký tài khoản" />
+                    android:onClick="@{() -> LoginViewModel.onRegister()}"
+                    android:text="Đăng ký tài khoản" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
     </LinearLayout>
 </layout>

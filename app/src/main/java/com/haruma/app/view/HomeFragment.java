@@ -30,22 +30,23 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
         ListView listView = rootView.findViewById(R.id.myListView);
-        DatabaseHelper db = new DatabaseHelper(rootView.getContext());
+        DatabaseHelper db = new DatabaseHelper(getContext());
         List<Diary> myList = db.getAllDiaries();
         Map<String, ChangeCallback> myCallback = new HashMap<>();
         myCallback.put("onChange", (id) -> {
 
         });
         myCallback.put("onDelete", (id) -> {
-            // Hiển thị hộp thoại xác nhận
             new AlertDialog.Builder(getContext())
                     .setTitle("Xác nhận xóa")
                     .setMessage("Bạn có chắc chắn muốn xóa nhật ký này không?")
                     .setPositiveButton("Xác nhận", (dialog, which) -> {
+                        try {
+                            db.deleteDiary(id);
+                            List<Diary> updatedList = db.getAllDiaries();
                         DatabaseHelper dbHelper = new DatabaseHelper(getContext());
                         try {
                             dbHelper.deleteDiary(id);
-                            // Cập nhật lại danh sách sau khi xóa
                             List<Diary> updatedList = dbHelper.getAllDiaries();
                             CustomAdapter adapter = AdapterSessionManager.getInstance().getCustomAdapter();
                             if (adapter != null) {
