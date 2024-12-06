@@ -18,11 +18,12 @@ import com.haruma.app.model.Diary;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class CustomAdapter extends ArrayAdapter<Diary> {
-    private Context mContext;
-    private int mResource;
-    private Map<String, ChangeCallback> callback;
+    private final Context mContext;
+    private final int mResource;
+    private final Map<String, ChangeCallback> callback;
 
     public CustomAdapter(@NonNull Context context, int resource, @NonNull List<Diary> objects, Map<String, ChangeCallback> callback) {
         super(context, resource, objects);
@@ -54,11 +55,14 @@ public class CustomAdapter extends ArrayAdapter<Diary> {
             popupMenu.getMenuInflater().inflate(R.menu.option_menu, popupMenu.getMenu());
             popupMenu.setOnMenuItemClickListener(item -> {
                 if (item.getItemId() == R.id.btnSua) {
-                    this.callback.get("onChange").run(diary.getDiaryId());
+                    assert diary != null;
+                    Objects.requireNonNull(this.callback.get("onChange")).run(diary.getDiaryId());
                 } else if (item.getItemId() == R.id.btnXoa) {
-                    this.callback.get("onDelete").run(diary.getDiaryId());
+                    assert diary != null;
+                    Objects.requireNonNull(this.callback.get("onDelete")).run(diary.getDiaryId());
                 } else if (item.getItemId() == R.id.btnXemChiTiet) {
-                    this.callback.get("onDetail").run(diary.getDiaryId());
+                    assert diary != null;
+                    Objects.requireNonNull(this.callback.get("onDetail")).run(diary.getDiaryId());
                 }
                 return true;
             });
