@@ -24,6 +24,9 @@
         android:theme="@style/Theme.App"
         tools:targetApi="34">
         <activity
+            android:name=".view.HelpActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.DetailActivity"
             android:exported="false" />
         <activity
