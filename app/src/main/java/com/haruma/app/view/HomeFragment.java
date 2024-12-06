@@ -46,6 +46,10 @@ public class HomeFragment extends Fragment {
                         try {
                             db.deleteDiary(id);
                             List<Diary> updatedList = db.getAllDiaries();
+                        DatabaseHelper dbHelper = new DatabaseHelper(getContext());
+                        try {
+                            dbHelper.deleteDiary(id);
+                            List<Diary> updatedList = dbHelper.getAllDiaries();
                             CustomAdapter adapter = AdapterSessionManager.getInstance().getCustomAdapter();
                             if (adapter != null) {
                                 adapter.setList(updatedList);
@@ -60,6 +64,7 @@ public class HomeFragment extends Fragment {
                     })
                     .show();
         });
+
         myCallback.put("onDetail", (id) -> {
             Intent intent = new Intent(rootView.getContext(), DetailActivity.class);
             intent.putExtra("id", id);
