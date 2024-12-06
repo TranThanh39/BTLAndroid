@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    tools:context=".view.BackupDiary">
+
+    <data>
+        <variable
+            name="backupDiaryViewModel"
+            type="com.haruma.app.viewmodel.BackupDiaryViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:elevation="4dp"
+            android:theme="?attr/actionBarTheme"
+            android:title="Quản lý thời gian"
+            android:titleTextColor="@android:color/white" />
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="*"
+            android:padding="16dp"
+            android:layout_marginTop="16dp">
+
+            <TableRow android:layout_marginBottom="8dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Quyền lưu tệp tự do"
+                    android:textAppearance="?attr/textAppearanceBody1"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_vertical" />
+                <TextView
+                    android:id="@+id/txtPermission"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Chưa cấp quyền"
+                    android:textAppearance="?attr/textAppearanceBody1"
+                    android:layout_gravity="center_vertical"
+                    android:paddingStart="8dp" />
+            </TableRow>
+
+            <TableRow android:layout_marginTop="8dp" android:layout_marginBottom="8dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cấp quyền lưu file"
+                    android:textAppearance="?attr/textAppearanceBody1"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_vertical" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnRequest"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cài đặt"
+                    app:cornerRadius="8dp"
+                    android:layout_gravity="center_vertical" />
+            </TableRow>
+
+            <TableRow android:layout_marginTop="8dp" android:layout_marginBottom="8dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sao lưu tệp JSON"
+                    android:textAppearance="?attr/textAppearanceBody1"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_vertical" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSave"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Lưu tệp"
+                    app:cornerRadius="8dp"
+                    android:layout_gravity="center_vertical" />
+            </TableRow>
+            <TableRow android:layout_marginTop="8dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Lấy dữ liệu từ tệp JSON"
+                    android:textAppearance="?attr/textAppearanceBody1"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_vertical" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnPick"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Đọc tệp"
+                    app:cornerRadius="8dp"
+                    android:layout_gravity="center_vertical" />
+            </TableRow>
+
+        </TableLayout>
+    </LinearLayout>
+</layout>

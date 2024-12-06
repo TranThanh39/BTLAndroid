@@ -1,5 +1,7 @@
 [versions]
+activityVersion = "1.6.0"
 agp = "8.6.0"
+gson = "2.10.1"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
@@ -14,6 +16,9 @@ activityCompose = "1.9.3"
 composeBom = "2024.04.01"
 
 [libraries]
+activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityVersion" }
+activity-v160 = { module = "androidx.activity:activity", version.ref = "activityVersion" }
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }

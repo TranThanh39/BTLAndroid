@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/btnSua"
+        android:title="Sửa"
+        android:orderInCategory="1"/>
+    <item android:title="Xóa"
+        android:orderInCategory="2"
+        android:id="@+id/btnXoa"/>
+    <item android:id="@+id/btnXemChiTiet"
+        android:title="Xem chi tiết"
+        android:orderInCategory="3"/>
+</menu>

@@ -80,6 +80,8 @@ dependencies {
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
     implementation(libs.mpandroidchart)
-
+    implementation(libs.activity.v160)
+    implementation(libs.activity.ktx)
+    implementation(libs.gson)
 }
 
