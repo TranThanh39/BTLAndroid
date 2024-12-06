@@ -78,23 +78,24 @@ public class CustomAdapter extends ArrayAdapter<Diary> {
             ngay.setText(diary.getDay());
             ngaybd.setText(String.format("%sh", diary.getStartTime()));
             ngaykt.setText(String.format("%sh", diary.getEndTime()));
-            if (diary.getStatus()) {
-                chkStatus.setChecked(true);
-            }
+            chkStatus.setOnCheckedChangeListener(null);
+            chkStatus.setChecked(diary.getStatus());
+            chkStatus.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                try {
+                    DatabaseHelper db = new DatabaseHelper(this.context);
+                    db.updateDiary(diary.getDiaryId(), diary.getName(), diary.getDay(), diary.getNote(), diary.getStartTime(), diary.getEndTime(), isChecked);
+                    diary.setStatus(isChecked);
+                    Toast.makeText(this.context, String.format("Đã cập nhật trạng thái của nhật ký %d", diary.getDiaryId()), Toast.LENGTH_LONG).show();
+                    this.setList(db.getAllDiaries());
+                    this.notifyDataSetChanged();
+                } catch (Exception ex) {
+                    Toast.makeText(this.context, ex.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            });
         }
-        chkStatus.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            try {
-                DatabaseHelper db = new DatabaseHelper(this.context);
-                assert diary != null;
-                db.updateDiary(diary.getDiaryId(), diary.getName(), diary.getDay(), diary.getNote(), diary.getStartTime(), diary.getEndTime(), isChecked);
-                Toast.makeText(this.context, String.format("Đã cập nhật trạng thái của nhật ký %d", diary.getDiaryId()), Toast.LENGTH_LONG).show();
-                this.setList(db.getAllDiaries());
-                this.notifyDataSetChanged();
-            } catch (Exception ex) {
-                Toast.makeText(this.context, ex.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
+
         return convertView;
     }
+
 }
 
