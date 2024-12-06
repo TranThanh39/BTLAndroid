@@ -109,6 +109,10 @@ public class EditViewModel extends BaseObservable {
                     makeToast("Ngày không hợp lệ. Vui lòng nhập theo định dạng dd/MM/yyyy và đảm bảo ngày hợp lệ.");
                     return;
                 }
+                if (!isValidTime(startTime) || !isValidTime(endTime)) {
+                    makeToast("Thời gian không hợp lệ. Vui lòng nhập theo định dạng HH:mm với giờ từ 0-23 và phút từ 0-59.");
+                    return;
+                }
                 db.updateDiary(diary.getDiaryId(), name, date, note, startTime, endTime, diary.getStatus());
                 makeToast("Sửa hoạt động thành công");
                 Objects.requireNonNull(this.callback.get("onEdit")).run();
@@ -159,6 +163,11 @@ public class EditViewModel extends BaseObservable {
     // Kiêm tra xem có phải năm nhuận không
     private boolean isLeapYear(int year) {
         return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
+    }
+
+    private boolean isValidTime(String time) {
+        String timePattern = "^([0-1][0-9]|2[0-3]):([0-5][0-9])$";
+        return time != null && time.matches(timePattern);
     }
 
     private void makeToast(String message) {
