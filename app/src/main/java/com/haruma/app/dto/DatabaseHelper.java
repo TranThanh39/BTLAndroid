@@ -15,7 +15,7 @@ import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "school_diary.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     private static final String TABLE_USER = "User";
     private static final String TABLE_USER_DETAIL = "UserDetail";
@@ -35,6 +35,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DIARY_NOTE = "note";
     private static final String DIARY_STARTTIME = "startTime";
     private static final String DIARY_ENDTIME = "endTime";
+    private static final String STATUS = "status";
 
     private static final String CREATE_TABLE_USER = "CREATE TABLE IF NOT EXISTS " + TABLE_USER + "("
             + USER_ID + " INTEGER PRIMARY KEY,"
@@ -55,6 +56,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + DIARY_NOTE + " VARCHAR(255),"
             + DIARY_STARTTIME + " TIME,"
             + DIARY_ENDTIME + " TIME,"
+            + STATUS + " INTEGER,"
             + USER_ID + " INTEGER,"
             + "FOREIGN KEY(" + USER_ID + ") REFERENCES " + TABLE_USER + "(" + USER_ID + ")" + ")";
 
@@ -64,6 +66,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+
         db.execSQL(CREATE_TABLE_USER);
         db.execSQL(CREATE_TABLE_USER_DETAIL);
         db.execSQL(CREATE_TABLE_DIARY);
@@ -134,6 +137,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("startTime", startTime);
         values.put("endTime", endTime);
         values.put("userId", userId);
+        values.put("status", 0);
         db.insert(TABLE_DIARY, null, values);
         db.close();
     }
@@ -162,6 +166,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_DIARY, null);
         if (cursor.moveToFirst()) {
             do {
+
                 Diary diary = new Diary(
                         cursor.getInt(cursor.getColumnIndexOrThrow("diaryId")),
                         cursor.getString(cursor.getColumnIndexOrThrow("name")),
@@ -169,7 +174,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         cursor.getString(cursor.getColumnIndexOrThrow("note")),
                         cursor.getString(cursor.getColumnIndexOrThrow("startTime")),
                         cursor.getString(cursor.getColumnIndexOrThrow("endTime")),
-                        cursor.getInt(cursor.getColumnIndexOrThrow("userId"))
+                        cursor.getInt(cursor.getColumnIndexOrThrow("userId")),
+                        cursor.getInt(cursor.getColumnIndexOrThrow("status"))
+
                 );
                 diaryList.add(diary);
             } while (cursor.moveToNext());

@@ -8,11 +8,12 @@ public class Diary {
     private String startTime;
     private String endTime;
     private int userId;
+    private Boolean status;
 
     public Diary() {
     }
 
-    public Diary(int diaryId, String name, String day, String note, String startTime, String endTime, int userId) {
+    public Diary(int diaryId, String name, String day, String note, String startTime, String endTime, int userId, int status) {
         this.diaryId = diaryId;
         this.name = name;
         this.day = day;
@@ -20,6 +21,8 @@ public class Diary {
         this.startTime = startTime;
         this.endTime = endTime;
         this.userId = userId;
+        if (status==0) this.status = false;
+        else this.status = true;
     }
 
     public int getDiaryId() {
@@ -76,6 +79,25 @@ public class Diary {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        String tmp="Chua hoan thanh";
+        if (status) tmp="Da hoan thanh";
+        return "Tên công việc: " + name +
+                "\t\tNgày khởi tạo: " + day + '\n' +
+                "Ngày bắt đầu: " + startTime +
+                "\t\tNgày kết thúc: " + endTime+'\n'
+                 + "Trạng thái: " +tmp;
     }
 }
 
