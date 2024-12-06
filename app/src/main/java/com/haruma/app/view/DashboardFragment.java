@@ -56,12 +56,12 @@ public class DashboardFragment extends Fragment {
     }
 
 
-    public void show_chart(float num1, float num2){
+    public void showChart(float num1, float num2){
         PieChart pieChart = root.findViewById(R.id.pieChart);
 
         ArrayList<PieEntry> pieEntries = new ArrayList<>();
-        pieEntries.add(new PieEntry(num1*100f, "Done"));
-        pieEntries.add(new PieEntry(num2*100f, "Not Done"));
+        pieEntries.add(new PieEntry(num1*100f, "Hoàn thành"));
+        pieEntries.add(new PieEntry(num2*100f, "Đã hoàn thành"));
 
 
         PieDataSet pieDataSet = new PieDataSet(pieEntries, "");
@@ -155,10 +155,10 @@ public class DashboardFragment extends Fragment {
             di2=di;
         }
 
-        DashboardAdapter adapt = new DashboardAdapter(activity, di2);
+        DashboardAdapter adapter = new DashboardAdapter(activity, R.layout.dashboard_list_tile, di2);
 
         ListView lv = root.findViewById(R.id.listview);
-        lv.setAdapter(adapt);
+        lv.setAdapter(adapter);
         float done=0;
         for (int i=0; i<di2.size(); i++){
             if (di2.get(i).getStatus()){
@@ -168,7 +168,7 @@ public class DashboardFragment extends Fragment {
         dh.setText("Số việc đã hoàn thành: "+String.valueOf((int)done));
         ch.setText("Số việc chưa hoàn thành: "+String.valueOf(di2.size()-(int)done));
         float tmp = done/di2.size();
-        show_chart(tmp, 1-tmp);
+        showChart(tmp, 1-tmp);
     }
 
     @Nullable

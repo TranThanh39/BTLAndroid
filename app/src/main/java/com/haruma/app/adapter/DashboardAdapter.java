@@ -1,52 +1,49 @@
 package com.haruma.app.adapter;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.haruma.app.R;
 import com.haruma.app.model.Diary;
 
 import java.util.List;
 
-public class DashboardAdapter extends BaseAdapter {
+public class DashboardAdapter extends ArrayAdapter<Diary> {
+    private final Context context;
+    private final int mResource;
 
-    private Activity activity;
-    private List<Diary> di;
-
-
-    public DashboardAdapter(Activity activity, List<Diary> di){
-        this.activity=activity;
-        this.di=di;
+    public DashboardAdapter(@NonNull Context context, int resource, @NonNull List<Diary> objects) {
+        super(context, resource, objects);
+        this.context = context;
+        this.mResource = resource;
     }
 
-
+    @SuppressLint({"SetTextI18n", "DefaultLocale"})
+    @NonNull
     @Override
-    public int getCount() {
-        return di.toArray().length;
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return di.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @SuppressLint({"ViewHolder", "InflateParams"})
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater flater=activity.getLayoutInflater();
-        convertView=flater.inflate(R.layout.layout, null);
-        TextView tv=(TextView)convertView.findViewById(R.id.textView9);
-        tv.setText(di.get(position).toString());
+    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        if (convertView == null) {
+            convertView = LayoutInflater.from(context).inflate(mResource, parent, false);
+        }
+        Diary diary = getItem(position);
+        TextView tenhd = convertView.findViewById(R.id.tvTenhd);
+        TextView ngay = convertView.findViewById(R.id.tvNgay);
+        TextView ngaybd = convertView.findViewById(R.id.tvNgaybd);
+        TextView ngaykt = convertView.findViewById(R.id.tvNgaykt);
+        if (diary != null) {
+            tenhd.setText(diary.getName());
+            ngay.setText(diary.getDay());
+            ngaybd.setText(String.format("%sh", diary.getStartTime()));
+            ngaykt.setText(String.format("%sh", diary.getEndTime()));
+        }
         return convertView;
     }
 }
