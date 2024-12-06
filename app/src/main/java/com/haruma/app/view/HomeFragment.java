@@ -27,7 +27,6 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
-        FloatingActionButton fab = rootView.findViewById(R.id.fab);
         ListView listView = rootView.findViewById(R.id.myListView);
         DatabaseHelper db = new DatabaseHelper(rootView.getContext());
         List<Diary> myList = db.getAllDiaries();
@@ -41,15 +40,13 @@ public class HomeFragment extends Fragment {
         myCallback.put("onDetail", (id) -> {
 
         });
-        CustomAdapter myadapter = new CustomAdapter(rootView.getContext(), R.layout.diary_list_tile, myList, myCallback);
-        listView.setAdapter(myadapter);
-        AdapterSessionManager.getInstance().setCustomAdapter(myadapter);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), AddActivity.class);
-                startActivity(intent);
-            }
+        CustomAdapter adapter = new CustomAdapter(rootView.getContext(), R.layout.diary_list_tile, myList, myCallback);
+        listView.setAdapter(adapter);
+        AdapterSessionManager.getInstance().setCustomAdapter(adapter);
+        FloatingActionButton fab = rootView.findViewById(R.id.fab);
+        fab.setOnClickListener(view -> {
+            Intent intent = new Intent(getActivity(), AddActivity.class);
+            startActivity(intent);
         });
         return rootView;
     }
