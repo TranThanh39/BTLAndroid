@@ -105,6 +105,10 @@ public class EditViewModel extends BaseObservable {
     public void onEdit() {
         try {
             if (isValidInput()) {
+                if (!isValidDate(date)) {
+                    makeToast("Ngày không hợp lệ. Vui lòng nhập theo định dạng dd/MM/yyyy và đảm bảo ngày hợp lệ.");
+                    return;
+                }
                 db.updateDiary(diary.getDiaryId(), name, date, note, startTime, endTime, diary.getStatus());
                 makeToast("Sửa hoạt động thành công");
                 Objects.requireNonNull(this.callback.get("onEdit")).run();
@@ -127,6 +131,34 @@ public class EditViewModel extends BaseObservable {
                 date != null && !date.isEmpty() &&
                 startTime != null && !startTime.isEmpty() &&
                 endTime != null && !endTime.isEmpty();
+    }
+
+    private boolean isValidDate(String date) {
+        String datePattern = "^([0-2][0-9]|3[0-1])/(0[1-9]|1[0-2])/([1-9][0-9]{3})$";
+        if (!date.matches(datePattern)) {
+            return false;
+        }
+
+        String[] parts = date.split("/");
+        int day = Integer.parseInt(parts[0]);
+        int month = Integer.parseInt(parts[1]);
+        int year = Integer.parseInt(parts[2]);
+
+        if (year < 1970) {
+            return false;
+        }
+
+        int[] daysInMonth = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+        if (isLeapYear(year)) {
+            daysInMonth[1] = 29; // Tháng 2 có 29 ngày nếu là năm nhuận
+        }
+
+        return month >= 1 && month <= 12 && day >= 1 && day <= daysInMonth[month - 1];
+    }
+
+    // Kiêm tra xem có phải năm nhuận không
+    private boolean isLeapYear(int year) {
+        return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
     }
 
     private void makeToast(String message) {
