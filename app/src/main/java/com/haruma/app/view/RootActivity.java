@@ -28,26 +28,25 @@ public class RootActivity extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, new HomeFragment()) // Fragment container
+                    .replace(R.id.fragment_container, new HomeFragment())
                     .commit();
         }
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem item) {
-                Fragment selectedFragment = null;
-                if (item.getItemId() == R.id.home) {
-                    selectedFragment = new HomeFragment();
-                } else if (item.getItemId() == R.id.dashboard) {
-                    selectedFragment = new DashboardFragment();
-                }
-                else if (item.getItemId() == R.id.settings) {
-                    selectedFragment = new SettingsFragment();
-                }
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            Fragment selectedFragment = null;
+            if (item.getItemId() == R.id.home) {
+                selectedFragment = new HomeFragment();
+            } else if (item.getItemId() == R.id.dashboard) {
+                selectedFragment = new DashboardFragment();
+            }
+            else if (item.getItemId() == R.id.settings) {
+                selectedFragment = new SettingsFragment();
+            }
+            if (selectedFragment != null) {
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment_container, selectedFragment)
                         .commit();
-                return true;
             }
+            return true;
         });
     }
 }
