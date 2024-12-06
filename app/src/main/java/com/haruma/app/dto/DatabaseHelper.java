@@ -128,7 +128,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void addDiary(String name, String day, String note, String startTime, String endTime, int userId) {
+    public void addDiary(String name, String day, String note, String startTime, String endTime, boolean status, int userId) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("name", name);
@@ -137,12 +137,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("startTime", startTime);
         values.put("endTime", endTime);
         values.put("userId", userId);
-        values.put("status", 0);
+        values.put("status", status ? 1 : 0);
         db.insert(TABLE_DIARY, null, values);
         db.close();
     }
 
-    public void updateDiary(int diaryId, String name, String day, String note, String startTime, String endTime) {
+    public void updateDiary(int diaryId, String name, String day, String note, String startTime, String endTime, boolean status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("name", name);
@@ -150,6 +150,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("note", note);
         values.put("startTime", startTime);
         values.put("endTime", endTime);
+        values.put("status", status ? 1 : 0);
         db.update(TABLE_DIARY, values, "diaryId = ?", new String[]{String.valueOf(diaryId)});
         db.close();
     }
@@ -200,7 +201,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     cursor.getString(cursor.getColumnIndexOrThrow("note")),
                     cursor.getString(cursor.getColumnIndexOrThrow("startTime")),
                     cursor.getString(cursor.getColumnIndexOrThrow("endTime")),
-                    cursor.getInt(cursor.getColumnIndexOrThrow("userId"))
+                    cursor.getInt(cursor.getColumnIndexOrThrow("userId")),
+                    cursor.getInt(cursor.getColumnIndexOrThrow("status"))
             );
         }
 

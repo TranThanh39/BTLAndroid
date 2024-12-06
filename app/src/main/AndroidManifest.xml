@@ -27,22 +27,8 @@
             android:name=".view.DetailActivity"
             android:exported="false" />
         <activity
-            android:name=".view.AnalystLayout"
-            android:exported="false" />
-        <activity
-            android:name=".AnalystView"
-            android:exported="false"
-            android:label="@string/title_activity_analyst_view"
-            android:theme="@style/Theme.App" />
-        <activity
-            android:name=".view.AnalystActivity"
-            android:exported="false"
-            android:label="@string/title_activity_analyst"
-            android:theme="@style/Theme.App" />
-        <activity
-            android:name=".view.SettingsFragment$SubListItem"
             android:name=".view.BackupDiary"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".view.RootActivity"
             android:exported="false" />

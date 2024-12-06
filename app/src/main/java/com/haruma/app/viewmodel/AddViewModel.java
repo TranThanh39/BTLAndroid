@@ -85,7 +85,7 @@ public class AddViewModel extends BaseObservable {
             if (isValidInput()) {
                 DatabaseHelper databaseHelper = new DatabaseHelper(context);
                 int userId = UserSessionManager.getInstance().getCurrentUser().getUserId();
-                databaseHelper.addDiary(name, date, note, startTime, endTime, userId);
+                databaseHelper.addDiary(name, date, note, startTime, endTime, false, 0);
                 makeToast("Thêm hoạt động thành công");
                 Objects.requireNonNull(this.callback.get("onAdd")).run();
 

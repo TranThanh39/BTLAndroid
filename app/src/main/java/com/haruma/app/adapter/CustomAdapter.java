@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -12,8 +13,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.PopupMenu;
 
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import com.haruma.app.R;
+import com.haruma.app.dto.DatabaseHelper;
 import com.haruma.app.model.ChangeCallback;
 import com.haruma.app.model.Diary;
 
@@ -22,13 +25,13 @@ import java.util.Map;
 import java.util.Objects;
 
 public class CustomAdapter extends ArrayAdapter<Diary> {
-    private final Context mContext;
+    private final Context context;
     private final int mResource;
     private final Map<String, ChangeCallback> callback;
 
     public CustomAdapter(@NonNull Context context, int resource, @NonNull List<Diary> objects, Map<String, ChangeCallback> callback) {
         super(context, resource, objects);
-        this.mContext = context;
+        this.context = context;
         this.mResource = resource;
         this.callback = callback;
     }
@@ -38,12 +41,12 @@ public class CustomAdapter extends ArrayAdapter<Diary> {
         this.addAll(list);
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n", "DefaultLocale"})
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         if (convertView == null) {
-            convertView = LayoutInflater.from(mContext).inflate(mResource, parent, false);
+            convertView = LayoutInflater.from(context).inflate(mResource, parent, false);
         }
         Diary diary = getItem(position);
         TextView tenhd = convertView.findViewById(R.id.tvTenhd);
@@ -51,6 +54,7 @@ public class CustomAdapter extends ArrayAdapter<Diary> {
         TextView ngaybd = convertView.findViewById(R.id.tvNgaybd);
         TextView ngaykt = convertView.findViewById(R.id.tvNgaykt);
         ImageButton iconMenu = convertView.findViewById(R.id.iconMenu);
+        CheckBox chkStatus = convertView.findViewById(R.id.chkStatus);
         iconMenu.setOnClickListener(view -> {
             PopupMenu popupMenu = new PopupMenu(view.getContext(), iconMenu);
             popupMenu.getMenuInflater().inflate(R.menu.option_menu, popupMenu.getMenu());
@@ -74,7 +78,22 @@ public class CustomAdapter extends ArrayAdapter<Diary> {
             ngay.setText(diary.getDay());
             ngaybd.setText(String.format("%sh", diary.getStartTime()));
             ngaykt.setText(String.format("%sh", diary.getEndTime()));
+            if (diary.getStatus()) {
+                chkStatus.setChecked(true);
+            }
         }
+        chkStatus.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            try {
+                DatabaseHelper db = new DatabaseHelper(this.context);
+                assert diary != null;
+                db.updateDiary(diary.getDiaryId(), diary.getName(), diary.getDay(), diary.getNote(), diary.getStartTime(), diary.getEndTime(), isChecked);
+                Toast.makeText(this.context, String.format("Đã cập nhật trạng thái của nhật ký %d", diary.getDiaryId()), Toast.LENGTH_LONG).show();
+                this.setList(db.getAllDiaries());
+                this.notifyDataSetChanged();
+            } catch (Exception ex) {
+                Toast.makeText(this.context, ex.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
         return convertView;
     }
 }

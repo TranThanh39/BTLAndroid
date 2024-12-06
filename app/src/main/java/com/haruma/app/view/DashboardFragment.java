@@ -1,13 +1,9 @@
 package com.haruma.app.view;
 
-import android.app.DatePickerDialog;
-import android.database.sqlite.SQLiteDatabase;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.Toolbar;
-//import android.widget.Toolbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -18,10 +14,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
@@ -30,15 +24,17 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.haruma.app.R;
+import com.haruma.app.adapter.DashboardAdapter;
 import com.haruma.app.dto.DatabaseHelper;
 import com.haruma.app.model.Diary;
 
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Calendar;
+import java.util.List;
+import java.util.Objects;
 
 
 public class DashboardFragment extends Fragment {
@@ -106,21 +102,20 @@ public class DashboardFragment extends Fragment {
     public static boolean isInCurrentMonth(Date checkDate) {
         Calendar calendar = Calendar.getInstance();
 
-        int currentMonth = calendar.get(Calendar.MONTH); // Tháng hiện tại (0-11)
-        int currentYear = calendar.get(Calendar.YEAR); // Năm hiện tại
+        int currentMonth = calendar.get(Calendar.MONTH);
+        int currentYear = calendar.get(Calendar.YEAR);
 
         calendar.setTime(checkDate);
-        int checkMonth = calendar.get(Calendar.MONTH); // Tháng của ngày cần kiểm tra
-        int checkYear = calendar.get(Calendar.YEAR); // Năm của ngày cần kiểm tra
+        int checkMonth = calendar.get(Calendar.MONTH);
+        int checkYear = calendar.get(Calendar.YEAR);
 
         return (currentMonth == checkMonth && currentYear == checkYear);
     }
 
-    public void show_list_diary(int mode){
-
-        ArrayList<Diary> di2 = new ArrayList<Diary>();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
+    @SuppressLint("SetTextI18n")
+    public void showListDiary(int mode){
+        List<Diary> di2 = new ArrayList<Diary>();
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         if (mode==0){
             Date current = new Date();
 
@@ -135,7 +130,7 @@ public class DashboardFragment extends Fragment {
         else if (mode==1){
             for (int i=0; i<di.size(); i++){
                 try {
-                    if (isInCurrentWeek(sdf.parse(di.get(i).getDay()))){
+                    if (isInCurrentWeek(Objects.requireNonNull(sdf.parse(di.get(i).getDay())))){
                         di2.add(di.get(i));
                     }
                 }
@@ -160,7 +155,7 @@ public class DashboardFragment extends Fragment {
             di2=di;
         }
 
-        adapter adapt = new adapter(activity, di2);
+        DashboardAdapter adapt = new DashboardAdapter(activity, di2);
 
         ListView lv = root.findViewById(R.id.listview);
         lv.setAdapter(adapt);
@@ -187,38 +182,29 @@ public class DashboardFragment extends Fragment {
         tm=root.findViewById(R.id.textMode);
         dh=root.findViewById(R.id.dahoanthanh);
         ch=root.findViewById(R.id.chuahoanthanh);
-
-        Toolbar tb = root.findViewById(R.id.toolbar1);
-
-
-        activity.setSupportActionBar(tb);
-        activity.getSupportActionBar().setTitle("Thống kê");
-
-//        SQLiteDatabase db = cursor.getWritableDatabase();
-
-        show_list_diary(0);
-
+        showListDiary(0);
         return root;
     }
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        // Inflate menu từ resource XML
         inflater.inflate(R.menu.menu_analyst, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+
+    @SuppressLint("SetTextI18n")
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.it1){
-            show_list_diary(0);
+            showListDiary(0);
             tm.setText("Theo ngày");
         }
         if (item.getItemId() == R.id.it2){
-            show_list_diary(1);
+            showListDiary(1);
             tm.setText("Theo tuần");
         }
         if (item.getItemId() == R.id.it3){
-            show_list_diary(2);
+            showListDiary(2);
             tm.setText("Theo tháng");
         }
         return super.onOptionsItemSelected(item);

@@ -26,7 +26,6 @@ public class SettingsFragment extends Fragment {
             Intent intent = new Intent(rootView.getContext(), BackupDiary.class);
             startActivity(intent);
         });
-
         return rootView;
     }
 }

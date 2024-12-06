@@ -1,15 +1,17 @@
-<?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
     <item
         android:id="@+id/it1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:title="Theo ngày" />
+        android:title="Theo ngày"
+        app:showAsAction="never" />
+
     <item
         android:id="@+id/it2"
-        android:title="Theo tuần" />
+        android:title="Theo tuần"
+        app:showAsAction="never" />
+
     <item
         android:id="@+id/it3"
-        android:title="Theo tháng" />
+        android:title="Theo tháng"
+        app:showAsAction="never" />
 </menu>

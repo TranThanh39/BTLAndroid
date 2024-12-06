@@ -1,5 +1,6 @@
-package com.haruma.app.view;
+package com.haruma.app.adapter;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,15 +11,15 @@ import android.widget.TextView;
 import com.haruma.app.R;
 import com.haruma.app.model.Diary;
 
-import java.util.ArrayList;
+import java.util.List;
 
-public class adapter extends BaseAdapter {
+public class DashboardAdapter extends BaseAdapter {
 
     private Activity activity;
-    private ArrayList<Diary> di;
+    private List<Diary> di;
 
 
-    public adapter(Activity activity, ArrayList<Diary> di){
+    public DashboardAdapter(Activity activity, List<Diary> di){
         this.activity=activity;
         this.di=di;
     }
@@ -39,6 +40,7 @@ public class adapter extends BaseAdapter {
         return position;
     }
 
+    @SuppressLint({"ViewHolder", "InflateParams"})
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater flater=activity.getLayoutInflater();

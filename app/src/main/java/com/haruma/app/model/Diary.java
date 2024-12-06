@@ -8,7 +8,7 @@ public class Diary {
     private String startTime;
     private String endTime;
     private int userId;
-    private Boolean status;
+    private boolean status;
 
     public Diary() {
     }
@@ -21,8 +21,7 @@ public class Diary {
         this.startTime = startTime;
         this.endTime = endTime;
         this.userId = userId;
-        if (status==0) this.status = false;
-        else this.status = true;
+        this.status = status != 0;
     }
 
     public int getDiaryId() {
@@ -81,7 +80,7 @@ public class Diary {
         this.userId = userId;
     }
 
-    public Boolean getStatus() {
+    public boolean getStatus() {
         return status;
     }
 

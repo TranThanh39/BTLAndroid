@@ -105,7 +105,7 @@ public class EditViewModel extends BaseObservable {
     public void onEdit() {
         try {
             if (isValidInput()) {
-                db.updateDiary(diary.getDiaryId(), name, date, note, startTime, endTime);
+                db.updateDiary(diary.getDiaryId(), name, date, note, startTime, endTime, diary.getStatus());
                 makeToast("Sửa hoạt động thành công");
                 Objects.requireNonNull(this.callback.get("onEdit")).run();
 

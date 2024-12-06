@@ -83,7 +83,7 @@ public class BackupDiaryViewModel extends AndroidViewModel {
     public void onChangeDiary(List<Diary> diaries) {
         this.databaseHelper.clearDiary();
         for (Diary d : diaries) {
-            this.databaseHelper.addDiary(d.getName(), d.getDay(), d.getNote(), d.getStartTime(), d.getEndTime(),
+            this.databaseHelper.addDiary(d.getName(), d.getDay(), d.getNote(), d.getStartTime(), d.getEndTime(), d.getStatus(),
                     UserSessionManager.getInstance().getCurrentUser().getUserId());
         }
     }
