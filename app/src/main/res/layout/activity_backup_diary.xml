@@ -1,62 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".view.BackupDiary">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+    <data>
+        <variable
+            name="backupDiaryViewModel"
+            type="com.haruma.app.viewmodel.BackupDiaryViewModel" />
+    </data>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <TableLayout
-        android:stretchColumns="*"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <TableRow android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <TextView android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:text="Quyền lưu tệp tự do">
-            </TextView>
-            <TextView android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:text="" android:id="@+id/txtPermission">
-            </TextView>
-        </TableRow>
-        <TableRow android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <TextView android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:text="Cấp quyền lưu file">
-            </TextView>
-            <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:id="@+id/btnRequest" android:text="Cài đặt">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme" />
 
-            </Button>
-        </TableRow>
-        <TableRow android:layout_width="wrap_content"
+        <TableLayout
+            android:stretchColumns="*"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content">
-            <TextView android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:text="Sao lưu tệp JSON">
-            </TextView>
-            <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:id="@+id/btnSave" android:text="Lưu tệp">
+            <TableRow android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:text="Quyền lưu tệp tự do">
+                </TextView>
+                <TextView android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:text="" android:id="@+id/txtPermission">
+                </TextView>
+            </TableRow>
+            <TableRow android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:text="Cấp quyền lưu file">
+                </TextView>
+                <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:id="@+id/btnRequest" android:text="Cài đặt">
 
-            </Button>
-        </TableRow>
-        <TableRow android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <TextView android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:text="Lấy dữ liệu từ tệp JSON" >
-            </TextView>
-            <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:id="@+id/btnPick" android:text="Đọc tệp">
+                </Button>
+            </TableRow>
+            <TableRow android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:text="Sao lưu tệp JSON">
+                </TextView>
+                <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:id="@+id/btnSave" android:text="Lưu tệp">
 
-            </Button>
-        </TableRow>
-    </TableLayout>
-</LinearLayout>
+                </Button>
+            </TableRow>
+            <TableRow android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:text="Lấy dữ liệu từ tệp JSON" >
+                </TextView>
+                <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:id="@+id/btnPick" android:text="Đọc tệp">
+
+                </Button>
+            </TableRow>
+        </TableLayout>
+    </LinearLayout>
+</layout>

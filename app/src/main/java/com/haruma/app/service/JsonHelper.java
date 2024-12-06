@@ -1,12 +1,16 @@
 package com.haruma.app.service;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
+import java.lang.reflect.Type;
+import java.util.List;
+import java.util.Map;
 
 public class JsonHelper {
 
@@ -20,10 +24,19 @@ public class JsonHelper {
         }
     }
 
-    public static <T> T readJson(String filePath, Class<T> clazz) throws RuntimeException {
+    public static <T> T readJson(String filePath, Type typeOfT) throws RuntimeException {
         Gson gson = new Gson();
         try (Reader reader = new FileReader(filePath)) {
-            return gson.fromJson(reader, clazz);
+            return gson.fromJson(reader, typeOfT);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static List<Map<String, Object>> readJson(String filePath) throws RuntimeException {
+        Gson gson = new Gson();
+        try (Reader reader = new FileReader(filePath)) {
+            return gson.fromJson(reader, new TypeToken<List<Map<String, Object>>>(){}.getType());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

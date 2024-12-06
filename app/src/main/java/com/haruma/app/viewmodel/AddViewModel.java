@@ -83,15 +83,11 @@ public class AddViewModel extends BaseObservable {
         notifyPropertyChanged(BR.endTime);
     }
 
-    // Phương thức để xử lý khi người dùng nhấn nút "Thêm"
     public void onAdd() {
         try {
             if (isValidInput()) {
                 DatabaseHelper databaseHelper = new DatabaseHelper(context);
-
-                // Lấy userId từ SharedPreferences
                 int userId = UserSessionManager.getInstance().getCurrentUser().getUserId();
-
                 databaseHelper.addDiary(name, date, note, startTime, endTime, userId);
                 makeToast("Thêm hoạt động thành công");
                 Objects.requireNonNull(this.callback.get("onAdd")).run();
@@ -105,7 +101,6 @@ public class AddViewModel extends BaseObservable {
     }
 
 
-    // Phương thức để xử lý khi người dùng nhấn nút "Hủy"
     public void onCancel() {
         Objects.requireNonNull(this.callback.get("onCancel")).run();
     }
@@ -114,7 +109,6 @@ public class AddViewModel extends BaseObservable {
         this.onCancel();
     }
 
-    // Kiểm tra tính hợp lệ của các trường nhập liệu
     private boolean isValidInput() {
         return name != null && !name.isEmpty() &&
                 date != null && !date.isEmpty() &&
