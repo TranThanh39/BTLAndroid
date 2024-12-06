@@ -94,8 +94,8 @@ public class Diary {
         if (status) tmp="Da hoan thanh";
         return "Tên công việc: " + name +
                 "\t\tNgày khởi tạo: " + day + '\n' +
-                "Ngày bắt đầu: " + startTime +
-                "\t\tNgày kết thúc: " + endTime+'\n'
+                "Bắt đầu: " + startTime +
+                "\t\tKết thúc: " + endTime+'\n'
                  + "Trạng thái: " +tmp;
     }
 }
