@@ -12,7 +12,6 @@ import androidx.databinding.DataBindingUtil;
 
 import com.haruma.app.MainActivity;
 import com.haruma.app.R;
-import com.haruma.app.databinding.ActivityMainBinding;
 import com.haruma.app.databinding.ActivityRegisterBinding;
 import com.haruma.app.model.Callback;
 import com.haruma.app.viewmodel.RegisterViewModel;
