@@ -61,7 +61,7 @@ public class DashboardFragment extends Fragment {
 
         ArrayList<PieEntry> pieEntries = new ArrayList<>();
         pieEntries.add(new PieEntry(num1*100f, "Hoàn thành"));
-        pieEntries.add(new PieEntry(num2*100f, "Đã hoàn thành"));
+        pieEntries.add(new PieEntry(num2*100f, "Chưa hoàn thành"));
 
 
         PieDataSet pieDataSet = new PieDataSet(pieEntries, "");

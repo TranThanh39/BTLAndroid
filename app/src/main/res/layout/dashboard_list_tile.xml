@@ -30,23 +30,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Tên hoạt động:"
-                            android:textSize="16sp"
-                            android:textColor="?android:attr/textColorPrimary"
-                            android:maxLines="1"
-                            android:ellipsize="end" />
-                        <TextView
                             android:id="@+id/tvTenhd"
-                            android:layout_marginLeft="4dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Tên hoạt động"
                             android:textSize="16sp"
                             android:textColor="?android:attr/textColorPrimary"
-                            android:maxLines="1"
-                            android:ellipsize="end" />
+                            android:maxLines="1" />
                 </LinearLayout>
 
                 <LinearLayout
