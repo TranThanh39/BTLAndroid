@@ -22,21 +22,24 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.databinding.DataBindingUtil;
 
 import com.haruma.app.R;
+import com.haruma.app.databinding.ActivityAddBinding;
 import com.haruma.app.databinding.ActivityDetailBinding;
+import com.haruma.app.dto.AdapterSessionManager;
+import com.haruma.app.dto.DatabaseHelper;
+import com.haruma.app.model.Callback;
+import com.haruma.app.model.Diary;
 import com.haruma.app.viewmodel.DetailActivityViewModel;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class DetailActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_detail);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
         ActivityDetailBinding mainBinding = DataBindingUtil.setContentView(this,
                 R.layout.activity_detail);
         Intent intent = getIntent();

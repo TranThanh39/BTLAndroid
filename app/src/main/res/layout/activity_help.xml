@@ -1,17 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".view.HelpActivity"
-    android:orientation="vertical">
+    tools:context=".view.HelpActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+    <data>
+        <variable
+            name="helpViewModel"
+            type="com.haruma.app.viewmodel.HelpViewModel" />
+    </data>
+
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme" />
-</LinearLayout>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#FFFFFF">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            android:title="Trợ giúp"
+            android:titleTextColor="@android:color/white" />
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ứng dụng của chúng tôi mang lại giải pháp tiện lợi để quản lý công việc và giao tiếp hàng ngày. Vui lòng chọn một trong các phương thức liên hệ dưới đây để được hỗ trợ."
+                android:textSize="16sp"
+                android:textColor="#000000"
+                android:layout_marginTop="16dp" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Gửi tin nhắn SMS"
+                android:onClick="@{()->helpViewModel.onSMS()}"
+                android:textSize="16sp"
+                android:layout_marginTop="16dp"
+                android:backgroundTint="?attr/colorPrimary"
+                android:textColor="#FFFFFF" />
+
+            <Button
+                android:id="@+id/btn_call"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Gọi điện thoại"
+                android:onClick="@{()->helpViewModel.onCall()}"
+                android:textSize="16sp"
+                android:layout_marginTop="8dp"
+                android:backgroundTint="?attr/colorPrimary"
+                android:textColor="#FFFFFF" />
+
+            <Button
+                android:id="@+id/btn_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Gửi Email"
+                android:onClick="@{()->helpViewModel.onEmail()}"
+                android:textSize="16sp"
+                android:layout_marginTop="8dp"
+                android:backgroundTint="?attr/colorPrimary"
+                android:textColor="#FFFFFF" />
+        </LinearLayout>
+    </LinearLayout>
+
+</layout>
