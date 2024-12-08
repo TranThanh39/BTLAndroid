@@ -16,25 +16,22 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_marginTop="8dp"
+        android:background="#FFFFFF"
         >
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
-            android:elevation="4dp"
+            android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
-            android:popupTheme="?attr/actionBarPopupTheme"
-            android:title="Chi tiết Hoạt Động"
+            android:title="Trợ giúp"
             android:titleTextColor="@android:color/white" />
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp">
 

@@ -93,19 +93,24 @@ public class BackupDiaryViewModel extends AndroidViewModel {
     }
 
     public void checkPermissions() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            if (Environment.isExternalStorageManager()) {
-                permissionStatus.setValue("Cho phép");
+        try {
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                if (Environment.isExternalStorageManager()) {
+                    permissionStatus.setValue("Cho phép");
+                } else {
+                    permissionStatus.setValue("Từ chối");
+                }
             } else {
-                permissionStatus.setValue("Từ chối");
+                if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                        && ContextCompat.checkSelfPermission(context, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                    permissionStatus.setValue("Cho phép");
+                } else {
+                    permissionStatus.setValue("Từ chối");
+                }
             }
-        } else {
-            if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-                    && ContextCompat.checkSelfPermission(context, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                permissionStatus.setValue("Cho phép");
-            } else {
-                permissionStatus.setValue("Từ chối");
-            }
+        } catch (Exception e) {
+            Toast.makeText(this.context, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 }
