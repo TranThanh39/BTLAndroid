@@ -14,4 +14,7 @@
         android:id="@+id/it3"
         android:title="Theo tháng"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/it4"
+        android:title="Tất cả thời gian" />
 </menu>

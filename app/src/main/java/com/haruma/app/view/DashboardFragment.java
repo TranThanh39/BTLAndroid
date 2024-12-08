@@ -56,26 +56,30 @@ public class DashboardFragment extends Fragment {
     }
 
 
-    public void showChart(float num1, float num2){
+    public void showChart(float num1, float num2){ //num1 là phân trăm các công việc đã hoàn thành
+                                                   //num2 là phần trăm công việc chưa hoàn thành
+
+        //Khởi tạo biểu đồ
         PieChart pieChart = root.findViewById(R.id.pieChart);
 
+        //Tạo biểu đồ
         ArrayList<PieEntry> pieEntries = new ArrayList<>();
-        pieEntries.add(new PieEntry(num1*100f, "Hoàn thành"));
-        pieEntries.add(new PieEntry(num2*100f, "Chưa hoàn thành"));
+        pieEntries.add(new PieEntry(num1*100, "Hoàn thành"));
+        pieEntries.add(new PieEntry(num2*100, "Chưa hoàn thành"));
 
-
+        //Tạo định dạng cho biểu đồ
         PieDataSet pieDataSet = new PieDataSet(pieEntries, "");
         pieDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
 
-
+        //Tạo và định dạng đối tượng chứa dữ liệu
         PieData pieData = new PieData(pieDataSet);
         pieData.setValueFormatter(new PercentFormatter());
 
+        //Hiển thị dữ liệu
         pieChart.setData(pieData);
-
-
         pieChart.invalidate();
 
+        //Tùy chỉnh giao diện cho biểu đồ
         pieChart.setHoleRadius(25f);
         pieChart.getDescription().setEnabled(false);
         pieChart.setDrawHoleEnabled(true);
@@ -85,30 +89,39 @@ public class DashboardFragment extends Fragment {
 
     }
 
+
     public static boolean isInCurrentWeek(Date dateToCheck) {
 
-        Calendar calendar = Calendar.getInstance();
 
+        //Lấy ngày đầu tiên của tuần
+        Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
         Date startOfWeek = calendar.getTime();
 
+        //Lấy ngày cuối cùng của tuần
         calendar.add(Calendar.DATE, 6);
         Date endOfWeek = calendar.getTime();
 
+        //Kiểm tra nếu ngày là ngày đầu hoặc cuối hoặc là trong tuần hay không, nếu có sẽ trả về True
         return dateToCheck.equals(startOfWeek) || dateToCheck.equals(endOfWeek)
                 || (dateToCheck.after(startOfWeek) && dateToCheck.before(endOfWeek));
     }
 
-    public static boolean isInCurrentMonth(Date checkDate) {
-        Calendar calendar = Calendar.getInstance();
 
+
+    public static boolean isInCurrentMonth(Date checkDate) {
+
+        //Lấy thông tin tháng và năm hiện tại
+        Calendar calendar = Calendar.getInstance();
         int currentMonth = calendar.get(Calendar.MONTH);
         int currentYear = calendar.get(Calendar.YEAR);
 
+        //Lấy ra thông tin tháng và năm của đối tượng Date được truyền vào để kiểm tra
         calendar.setTime(checkDate);
         int checkMonth = calendar.get(Calendar.MONTH);
         int checkYear = calendar.get(Calendar.YEAR);
 
+        //Kiểm tra tháng và năm có trùng với tháng và năm hiện tại không, nếu có sẽ trả về True
         return (currentMonth == checkMonth && currentYear == checkYear);
     }
 
@@ -117,10 +130,14 @@ public class DashboardFragment extends Fragment {
         List<Diary> di2 = new ArrayList<>();
         @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         if (mode==0){
+
+            //Lấy ngày hiện tại
             Date current = new Date();
 
+            //Định dạng lại ngày hiện tại thành chuỗi để so sánh
             String date = sdf.format(current);
 
+            //Kiểm tra các đối tượng có ngày trùng với ngày đã định dạng để thêm vào danh sách
             for (int i=0; i<di.size(); i++){
                 if (di.get(i).getDay().equals(date)){
                     di2.add(di.get(i));
@@ -206,6 +223,10 @@ public class DashboardFragment extends Fragment {
         if (item.getItemId() == R.id.it3){
             showListDiary(2);
             tm.setText("Theo tháng");
+        }
+        if (item.getItemId() == R.id.it4){
+            showListDiary(3);
+            tm.setText("Tất cả thời gian");
         }
         return super.onOptionsItemSelected(item);
     }
