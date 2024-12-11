@@ -66,10 +66,13 @@ public class HomeFragment extends Fragment {
             intent.putExtra("id", id);
             startActivity(intent);
         });
+
         CustomAdapter adapter = new CustomAdapter(rootView.getContext(), R.layout.diary_list_tile, myList, myCallback);
         listView.setAdapter(adapter);
         AdapterSessionManager.getInstance().setCustomAdapter(adapter);
         FloatingActionButton fab = rootView.findViewById(R.id.fab);
+
+        //Chuyển hướng màn hình tới trang thêm khi nhấn nút "+"
         fab.setOnClickListener(view -> {
             Intent intent = new Intent(getActivity(), AddActivity.class);
             startActivity(intent);

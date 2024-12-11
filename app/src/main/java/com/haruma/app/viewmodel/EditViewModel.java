@@ -113,6 +113,10 @@ public class EditViewModel extends BaseObservable {
                     makeToast("Thời gian không hợp lệ. Vui lòng nhập theo định dạng HH:mm với giờ từ 0-23 và phút từ 0-59.");
                     return;
                 }
+                if (!isStartTimeBeforeEndTime(startTime, endTime)) {
+                    makeToast("Thời gian bắt đầu phải nhỏ hơn thời gian kết thúc.");
+                    return;
+                }
                 db.updateDiary(diary.getDiaryId(), name, date, note, startTime, endTime, diary.getStatus());
                 makeToast("Sửa hoạt động thành công");
                 Objects.requireNonNull(this.callback.get("onEdit")).run();
@@ -169,6 +173,22 @@ public class EditViewModel extends BaseObservable {
         String timePattern = "^([0-1][0-9]|2[0-3]):([0-5][0-9])$";
         return time != null && time.matches(timePattern);
     }
+
+    private boolean isStartTimeBeforeEndTime(String startTime, String endTime) {
+        String[] startParts = startTime.split(":");
+        String[] endParts = endTime.split(":");
+
+        int startHour = Integer.parseInt(startParts[0]);
+        int startMinute = Integer.parseInt(startParts[1]);
+        int endHour = Integer.parseInt(endParts[0]);
+        int endMinute = Integer.parseInt(endParts[1]);
+
+        int startTotalMinutes = startHour * 60 + startMinute;
+        int endTotalMinutes = endHour * 60 + endMinute;
+
+        return startTotalMinutes < endTotalMinutes;
+    }
+
 
     private void makeToast(String message) {
         Toast.makeText(this.context, message, Toast.LENGTH_SHORT).show();
