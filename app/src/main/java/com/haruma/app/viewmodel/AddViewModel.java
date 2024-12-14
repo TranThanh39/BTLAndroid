@@ -99,6 +99,10 @@ public class AddViewModel extends BaseObservable {
                     makeToast("Thời gian không hợp lệ. Vui lòng nhập theo định dạng HH:mm với giờ từ 0-23 và phút từ 0-59.");
                     return;
                 }
+                if (!isStartTimeBeforeEndTime(startTime, endTime)) {
+                    makeToast("Thời gian bắt đầu phải nhỏ hơn thời gian kết thúc.");
+                    return;
+                }
                 DatabaseHelper databaseHelper = new DatabaseHelper(context);
                 databaseHelper.addDiary(name, date, note, startTime, endTime, false, 0);
                 makeToast("Thêm hoạt động thành công");
@@ -161,6 +165,22 @@ public class AddViewModel extends BaseObservable {
     private void makeToast(String message) {
         Toast.makeText(this.context, message, Toast.LENGTH_SHORT).show();
     }
+
+    private boolean isStartTimeBeforeEndTime(String startTime, String endTime) {
+        String[] startParts = startTime.split(":");
+        String[] endParts = endTime.split(":");
+
+        int startHour = Integer.parseInt(startParts[0]);
+        int startMinute = Integer.parseInt(startParts[1]);
+        int endHour = Integer.parseInt(endParts[0]);
+        int endMinute = Integer.parseInt(endParts[1]);
+
+        int startTotalMinutes = startHour * 60 + startMinute;
+        int endTotalMinutes = endHour * 60 + endMinute;
+
+        return startTotalMinutes < endTotalMinutes;
+    }
+
 
     // Lấy ngày hiện tại theo định dạng dd/MM/yyyy
     private String getCurrentDate() {
