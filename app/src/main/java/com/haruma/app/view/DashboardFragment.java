@@ -48,6 +48,7 @@ public class DashboardFragment extends Fragment {
     public TextView ch;
 
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         setHasOptionsMenu(true);
@@ -173,7 +174,10 @@ public class DashboardFragment extends Fragment {
         }
 
         DashboardAdapter adapter = new DashboardAdapter(activity, R.layout.dashboard_list_tile, di2);
-
+        if (di2.isEmpty()) {
+            root.findViewById(R.id.pieChart).setVisibility(View.GONE);
+            return;
+        }
         ListView lv = root.findViewById(R.id.listview);
         lv.setAdapter(adapter);
         float done=0;
