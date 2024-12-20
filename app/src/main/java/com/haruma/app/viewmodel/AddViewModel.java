@@ -6,8 +6,7 @@ import android.widget.Toast;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 
-import com.haruma.app.dto.DatabaseHelper;
-import com.haruma.app.dto.UserSessionManager;
+import com.haruma.app.utility.DatabaseHelper;
 import com.haruma.app.model.Callback;
 import com.haruma.app.BR;
 
@@ -104,8 +103,8 @@ public class AddViewModel extends BaseObservable {
                     return;
                 }
                 DatabaseHelper databaseHelper = new DatabaseHelper(context);
-                databaseHelper.addDiary(name, date, note, startTime, endTime, false, 0);
-                makeToast("Thêm hoạt động thành công");
+                databaseHelper.addTimeTable(name, date, note, startTime, endTime, false, 0);
+                makeToast("Thêm thời gian biểu thành công");
                 Objects.requireNonNull(this.callback.get("onAdd")).run();
 
             } else {

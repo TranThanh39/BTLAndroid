@@ -1,4 +1,4 @@
-package com.haruma.app.dto;
+package com.haruma.app.utility;
 
 import com.haruma.app.adapter.CustomAdapter;
 

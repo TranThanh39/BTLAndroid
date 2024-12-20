@@ -1,4 +1,4 @@
-package com.haruma.app.dto;
+package com.haruma.app.utility;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.haruma.app.model.Diary;
+import com.haruma.app.model.Timetable;
 import com.haruma.app.model.User;
 import com.haruma.app.model.UserDetail;
 
@@ -14,12 +14,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "school_diary.db";
+    private static final String DATABASE_NAME = "school_timetable.db";
     private static final int DATABASE_VERSION = 2;
 
     private static final String TABLE_USER = "User";
     private static final String TABLE_USER_DETAIL = "UserDetail";
-    private static final String TABLE_DIARY = "Diary";
+    private static final String TABLE_TIMETABLE = "Timetable";
 
     private static final String USER_ID = "userId";
     private static final String USER_EMAIL = "email";
@@ -29,12 +29,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String USERDETAIL_CLASS = "class";
     private static final String USERDETAIL_PHONE = "phone";
 
-    private static final String DIARY_ID = "diaryId";
-    private static final String DIARY_NAME = "name";
-    private static final String DIARY_DAY = "day";
-    private static final String DIARY_NOTE = "note";
-    private static final String DIARY_STARTTIME = "startTime";
-    private static final String DIARY_ENDTIME = "endTime";
+    private static final String TIMETABLE_ID = "timeTableId";
+    private static final String TIMETABLE_NAME = "name";
+    private static final String TIMETABLE_DAY = "day";
+    private static final String TIMETABLE_NOTE = "note";
+    private static final String TIMETABLE_STARTTIME = "startTime";
+    private static final String TIMETABLE_ENDTIME = "endTime";
     private static final String STATUS = "status";
 
     private static final String CREATE_TABLE_USER = "CREATE TABLE IF NOT EXISTS " + TABLE_USER + "("
@@ -49,13 +49,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + USERDETAIL_PHONE + " VARCHAR(20),"
             + "FOREIGN KEY(" + USER_ID + ") REFERENCES " + TABLE_USER + "(" + USER_ID + ") ON DELETE CASCADE" + ")";
 
-    private static final String CREATE_TABLE_DIARY = "CREATE TABLE IF NOT EXISTS " + TABLE_DIARY + "("
-            + DIARY_ID + " INTEGER PRIMARY KEY,"
-            + DIARY_NAME + " VARCHAR(50),"
-            + DIARY_DAY + " TIME,"
-            + DIARY_NOTE + " VARCHAR(255),"
-            + DIARY_STARTTIME + " TIME,"
-            + DIARY_ENDTIME + " TIME,"
+    private static final String CREATE_TABLE_TIMETABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_TIMETABLE + "("
+            + TIMETABLE_ID + " INTEGER PRIMARY KEY,"
+            + TIMETABLE_NAME + " VARCHAR(50),"
+            + TIMETABLE_DAY + " TIME,"
+            + TIMETABLE_NOTE + " VARCHAR(255),"
+            + TIMETABLE_STARTTIME + " TIME,"
+            + TIMETABLE_ENDTIME + " TIME,"
             + STATUS + " INTEGER,"
             + USER_ID + " INTEGER,"
             + "FOREIGN KEY(" + USER_ID + ") REFERENCES " + TABLE_USER + "(" + USER_ID + ")" + ")";
@@ -66,69 +66,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
         db.execSQL(CREATE_TABLE_USER);
         db.execSQL(CREATE_TABLE_USER_DETAIL);
-        db.execSQL(CREATE_TABLE_DIARY);
+        db.execSQL(CREATE_TABLE_TIMETABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER_DETAIL);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_DIARY);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_TIMETABLE);
         onCreate(db);
     }
 
-    public void addUser(String email, String password, String fullName, String className, String phoneNumber) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        try {
-            ContentValues values = new ContentValues();
-            values.put(USER_EMAIL, email);
-            values.put(USER_PASSWORD, password);
-            long userId = db.insert(TABLE_USER, null, values);
-            ContentValues newValues = new ContentValues();
-            newValues.put(USER_ID, userId);
-            newValues.put(USERDETAIL_FULLNAME, fullName);
-            newValues.put(USERDETAIL_CLASS, className);
-            newValues.put(USERDETAIL_PHONE, phoneNumber);
-            db.insert(TABLE_USER_DETAIL, null, newValues);
-        }
-        catch (Exception e) {
-            throw e;
-        } finally {
-            db.close();
-        }
-    }
-
-    public void updateUser(int userId, String email, String password, String fullName, String className, String phoneNumber) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        try {
-            ContentValues values = new ContentValues();
-            values.put(USER_EMAIL, email);
-            values.put(USER_PASSWORD, password);
-            db.update(TABLE_USER, values, "userId=?", new String[]{String.valueOf(userId)});
-            ContentValues newValues = new ContentValues();
-            newValues.put(USERDETAIL_FULLNAME, fullName);
-            newValues.put(USERDETAIL_CLASS, className);
-            newValues.put(USERDETAIL_PHONE, phoneNumber);
-            db.update(TABLE_USER_DETAIL, newValues, "userId=?", new String[]{String.valueOf(userId)});
-        }
-        catch (Exception e) {
-            throw e;
-        } finally {
-            db.close();
-        }
-    }
-
-    public void deleteUser(int userId) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_USER, "userId = ?", new String[]{String.valueOf(userId)});
-        db.delete(TABLE_USER_DETAIL, "userId = ?", new String[]{String.valueOf(userId)});
-        db.close();
-    }
-
-    public void addDiary(String name, String day, String note, String startTime, String endTime, boolean status, int userId) {
+    public void addTimeTable(String name, String day, String note, String startTime, String endTime, boolean status, int userId) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("name", name);
@@ -138,11 +89,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("endTime", endTime);
         values.put("userId", userId);
         values.put("status", status ? 1 : 0);
-        db.insert(TABLE_DIARY, null, values);
+        db.insert(TABLE_TIMETABLE, null, values);
         db.close();
     }
 
-    public void updateDiary(int diaryId, String name, String day, String note, String startTime, String endTime, boolean status) {
+    public void updateTimeTable(int timeTableId, String name, String day, String note, String startTime, String endTime, boolean status) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("name", name);
@@ -151,25 +102,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put("startTime", startTime);
         values.put("endTime", endTime);
         values.put("status", status ? 1 : 0);
-        db.update(TABLE_DIARY, values, "diaryId = ?", new String[]{String.valueOf(diaryId)});
+        db.update(TABLE_TIMETABLE, values, "timeTableId = ?", new String[]{String.valueOf(timeTableId)});
         db.close();
     }
 
-    public void deleteDiary(int diaryId) {
+    public void deleteTimetable(int timeTableId) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_DIARY, "diaryId = ?", new String[]{String.valueOf(diaryId)});
+        db.delete(TABLE_TIMETABLE, "timeTableId = ?", new String[]{String.valueOf(timeTableId)});
         db.close();
     }
 
-    public List<Diary> getAllDiaries() {
-        List<Diary> diaryList = new ArrayList<>();
+    public List<Timetable> getAllTimeTable() {
+        List<Timetable> timetableList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_DIARY, null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_TIMETABLE, null);
         if (cursor.moveToFirst()) {
             do {
-
-                Diary diary = new Diary(
-                        cursor.getInt(cursor.getColumnIndexOrThrow("diaryId")),
+                Timetable timetable = new Timetable(
+                        cursor.getInt(cursor.getColumnIndexOrThrow("timeTableId")),
                         cursor.getString(cursor.getColumnIndexOrThrow("name")),
                         cursor.getString(cursor.getColumnIndexOrThrow("day")),
                         cursor.getString(cursor.getColumnIndexOrThrow("note")),
@@ -177,25 +127,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         cursor.getString(cursor.getColumnIndexOrThrow("endTime")),
                         cursor.getInt(cursor.getColumnIndexOrThrow("userId")),
                         cursor.getInt(cursor.getColumnIndexOrThrow("status"))
-
                 );
-                diaryList.add(diary);
+                timetableList.add(timetable);
             } while (cursor.moveToNext());
         }
         cursor.close();
         db.close();
-        return diaryList;
+        return timetableList;
     }
 
-    public Diary findDiaryById(int diaryId) {
+    public Timetable findTimeTableById(int timeTableId) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Diary diary = null;
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_DIARY + " WHERE diaryId = ?",
-                new String[]{String.valueOf(diaryId)});
-
+        Timetable timetable = null;
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_TIMETABLE + " WHERE timeTableId = ?",
+                new String[]{String.valueOf(timeTableId)});
         if (cursor.moveToFirst()) {
-            diary = new Diary(
-                    cursor.getInt(cursor.getColumnIndexOrThrow("diaryId")),
+            timetable = new Timetable(
+                    cursor.getInt(cursor.getColumnIndexOrThrow("timeTableId")),
                     cursor.getString(cursor.getColumnIndexOrThrow("name")),
                     cursor.getString(cursor.getColumnIndexOrThrow("day")),
                     cursor.getString(cursor.getColumnIndexOrThrow("note")),
@@ -205,41 +153,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     cursor.getInt(cursor.getColumnIndexOrThrow("status"))
             );
         }
-
         cursor.close();
         db.close();
-        return diary;
-    }
-
-
-    public User getUserById(int userId) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        User user = null;
-        String query = "SELECT u." + USER_ID + ", u." + USER_EMAIL + ", u." + USER_PASSWORD + ", "
-                + "ud." + USERDETAIL_FULLNAME + ", ud." + USERDETAIL_CLASS + ", ud." + USERDETAIL_PHONE
-                + " FROM " + TABLE_USER + " u "
-                + " JOIN " + TABLE_USER_DETAIL + " ud ON u." + USER_ID + " = ud." + USER_ID
-                + " WHERE u." + USER_ID + " = ?";
-
-        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(userId)});
-
-        if (cursor.moveToFirst()) {
-            user = new User(
-                    cursor.getInt(cursor.getColumnIndexOrThrow(USER_ID)),
-                    cursor.getString(cursor.getColumnIndexOrThrow(USER_EMAIL)),
-                    cursor.getString(cursor.getColumnIndexOrThrow(USER_PASSWORD))
-            );
-            UserDetail userDetail = new UserDetail(
-                    cursor.getInt(cursor.getColumnIndexOrThrow(USER_ID)),
-                    cursor.getString(cursor.getColumnIndexOrThrow(USERDETAIL_FULLNAME)),
-                    cursor.getString(cursor.getColumnIndexOrThrow(USERDETAIL_CLASS)),
-                    cursor.getString(cursor.getColumnIndexOrThrow(USERDETAIL_PHONE))
-            );
-            user.setUserDetail(userDetail);
-        }
-        cursor.close();
-        db.close();
-        return user;
+        return timetable;
     }
 
     public boolean registerUser(String email, String password, String fullName, String className, String phoneNumber) {
@@ -253,7 +169,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return false;
         }
         ContentValues userDetailValues = new ContentValues();
-        userDetailValues.put(USER_ID, userId); // Foreign key
+        userDetailValues.put(USER_ID, userId);
         userDetailValues.put(USERDETAIL_FULLNAME, fullName);
         userDetailValues.put(USERDETAIL_CLASS, className);
         userDetailValues.put(USERDETAIL_PHONE, phoneNumber);
@@ -291,10 +207,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return user;
     }
 
-    public void clearDiary(){
-        List<Diary> data = this.getAllDiaries();
-        for (Diary d : data) {
-            this.deleteDiary(d.getDiaryId());
+    public void clearTimeTable(){
+        List<Timetable> data = this.getAllTimeTable();
+        for (Timetable d : data) {
+            this.deleteTimetable(d.getTimeTableId());
         }
     }
 

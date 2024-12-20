@@ -36,7 +36,7 @@
             android:name=".view.DetailActivity"
             android:exported="false" />
         <activity
-            android:name=".view.BackupDiary"
+            android:name=".view.BackupActivity"
             android:exported="true" />
         <activity
             android:name=".view.RootActivity"

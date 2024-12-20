@@ -25,8 +25,8 @@ import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.haruma.app.R;
 import com.haruma.app.adapter.DashboardAdapter;
-import com.haruma.app.dto.DatabaseHelper;
-import com.haruma.app.model.Diary;
+import com.haruma.app.utility.DatabaseHelper;
+import com.haruma.app.model.Timetable;
 
 
 import java.text.SimpleDateFormat;
@@ -42,7 +42,7 @@ public class DashboardFragment extends Fragment {
     public View root;
     public DatabaseHelper cursor;
     public AppCompatActivity activity;
-    public ArrayList<Diary> di;
+    public List<Timetable> di;
     public TextView tm;
     public TextView dh;
     public TextView ch;
@@ -65,8 +65,8 @@ public class DashboardFragment extends Fragment {
 
         //Tạo biểu đồ
         ArrayList<PieEntry> pieEntries = new ArrayList<>();
-        pieEntries.add(new PieEntry(num1*100, "Hoàn thành"));
-        pieEntries.add(new PieEntry(num2*100, "Chưa hoàn thành"));
+        pieEntries.add(new PieEntry(num1*100, "Thực hiện"));
+        pieEntries.add(new PieEntry(num2*100, "Không làm"));
 
         //Tạo định dạng cho biểu đồ
         PieDataSet pieDataSet = new PieDataSet(pieEntries, "");
@@ -127,8 +127,8 @@ public class DashboardFragment extends Fragment {
     }
 
     @SuppressLint("SetTextI18n")
-    public void showListDiary(int mode){
-        List<Diary> di2 = new ArrayList<>();
+    public void showListTimetable(int mode){
+        List<Timetable> di2 = new ArrayList<>();
         @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         if (mode==0){
 
@@ -186,8 +186,8 @@ public class DashboardFragment extends Fragment {
                 done+=1;
             }
         }
-        dh.setText("Số việc đã hoàn thành: "+String.valueOf((int)done));
-        ch.setText("Số việc chưa hoàn thành: "+String.valueOf(di2.size()-(int)done));
+        dh.setText("Số việc thực hiện: "+String.valueOf((int)done));
+        ch.setText("Số việc không thực hiện: "+String.valueOf(di2.size()-(int)done));
         float tmp = done/di2.size();
         showChart(tmp, 1-tmp);
     }
@@ -199,11 +199,11 @@ public class DashboardFragment extends Fragment {
         root = inflater.inflate(R.layout.fragment_dashboard, container, false);
         activity = (AppCompatActivity) requireActivity();
         cursor = new DatabaseHelper(activity);
-        di= new ArrayList<>(cursor.getAllDiaries());
+        di = cursor.getAllTimeTable();
         tm=root.findViewById(R.id.textMode);
         dh=root.findViewById(R.id.dahoanthanh);
         ch=root.findViewById(R.id.chuahoanthanh);
-        showListDiary(0);
+        showListTimetable(0);
         return root;
     }
     @Override
@@ -217,19 +217,19 @@ public class DashboardFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.it1){
-            showListDiary(0);
+            showListTimetable(0);
             tm.setText("Theo ngày");
         }
         if (item.getItemId() == R.id.it2){
-            showListDiary(1);
+            showListTimetable(1);
             tm.setText("Theo tuần");
         }
         if (item.getItemId() == R.id.it3){
-            showListDiary(2);
+            showListTimetable(2);
             tm.setText("Theo tháng");
         }
         if (item.getItemId() == R.id.it4){
-            showListDiary(3);
+            showListTimetable(3);
             tm.setText("Tất cả thời gian");
         }
         return super.onOptionsItemSelected(item);

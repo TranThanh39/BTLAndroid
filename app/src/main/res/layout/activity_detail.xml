@@ -9,7 +9,7 @@
     <data>
         <variable
             name="detailViewModel"
-            type="com.haruma.app.viewmodel.DetailActivityViewModel" />
+            type="com.haruma.app.viewmodel.DetailViewModel" />
     </data>
 
     <LinearLayout
@@ -55,13 +55,13 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="ID Nhật ký:"
+                            android:text="ID Thời gian biểu:"
                             android:textStyle="bold"
                             android:layout_marginBottom="8dp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@{String.valueOf(detailViewModel.diary.diaryId)}"
+                            android:text="@{String.valueOf(detailViewModel.timetable.timeTableId)}"
                             android:layout_marginBottom="8dp" />
                     </TableRow>
 
@@ -69,13 +69,13 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Tên nhật ký:"
+                            android:text="Tên Thời gian biểu:"
                             android:textStyle="bold"
                             android:layout_marginBottom="8dp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@{detailViewModel.diary.name}"
+                            android:text="@{detailViewModel.timetable.name}"
                             android:layout_marginBottom="8dp" />
                     </TableRow>
 
@@ -89,7 +89,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@{detailViewModel.diary.day}"
+                            android:text="@{detailViewModel.timetable.day}"
                             android:layout_marginBottom="8dp" />
                     </TableRow>
 
@@ -103,7 +103,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@{detailViewModel.diary.note}"
+                            android:text="@{detailViewModel.timetable.note}"
                             android:layout_marginBottom="8dp" />
                     </TableRow>
 
@@ -117,7 +117,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@{detailViewModel.diary.startTime}"
+                            android:text="@{detailViewModel.timetable.startTime}"
                             android:layout_marginBottom="8dp" />
                     </TableRow>
 
@@ -131,7 +131,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@{detailViewModel.diary.endTime}"
+                            android:text="@{detailViewModel.timetable.endTime}"
                             android:layout_marginBottom="8dp" />
                     </TableRow>
 

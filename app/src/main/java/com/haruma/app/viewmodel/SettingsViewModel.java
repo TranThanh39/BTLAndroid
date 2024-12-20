@@ -11,13 +11,10 @@ import androidx.lifecycle.AndroidViewModel;
 
 import com.haruma.app.BR; // Import BR for notifyPropertyChanged
 import com.haruma.app.MainActivity;
-import com.haruma.app.dto.UserSessionManager;
-import com.haruma.app.model.Callback;
+import com.haruma.app.utility.UserSessionManager;
 import com.haruma.app.model.User;
-import com.haruma.app.view.BackupDiary;
+import com.haruma.app.view.BackupActivity;
 import com.haruma.app.view.HelpActivity;
-
-import java.util.Map;
 
 public class SettingsViewModel extends AndroidViewModel {
     private final ObservableData observableData = new ObservableData();
@@ -124,7 +121,7 @@ public class SettingsViewModel extends AndroidViewModel {
     }
 
     public void onClickBackup() {
-        Intent intent = new Intent(getApplication(), BackupDiary.class);
+        Intent intent = new Intent(getApplication(), BackupActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         getApplication().startActivity(intent);
     }

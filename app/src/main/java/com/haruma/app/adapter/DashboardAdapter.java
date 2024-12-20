@@ -12,15 +12,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.haruma.app.R;
-import com.haruma.app.model.Diary;
+import com.haruma.app.model.Timetable;
 
 import java.util.List;
 
-public class DashboardAdapter extends ArrayAdapter<Diary> {
+public class DashboardAdapter extends ArrayAdapter<Timetable> {
     private final Context context;
     private final int mResource;
 
-    public DashboardAdapter(@NonNull Context context, int resource, @NonNull List<Diary> objects) {
+    public DashboardAdapter(@NonNull Context context, int resource, @NonNull List<Timetable> objects) {
         super(context, resource, objects);
         this.context = context;
         this.mResource = resource;
@@ -33,16 +33,16 @@ public class DashboardAdapter extends ArrayAdapter<Diary> {
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(mResource, parent, false);
         }
-        Diary diary = getItem(position);
+        Timetable timetable = getItem(position);
         TextView tenhd = convertView.findViewById(R.id.tvTenhd);
         TextView ngay = convertView.findViewById(R.id.tvNgay);
         TextView ngaybd = convertView.findViewById(R.id.tvNgaybd);
         TextView ngaykt = convertView.findViewById(R.id.tvNgaykt);
-        if (diary != null) {
-            tenhd.setText(diary.getName());
-            ngay.setText(diary.getDay());
-            ngaybd.setText(String.format("%sh", diary.getStartTime()));
-            ngaykt.setText(String.format("%sh", diary.getEndTime()));
+        if (timetable != null) {
+            tenhd.setText(timetable.getName());
+            ngay.setText(timetable.getDay());
+            ngaybd.setText(String.format("%sh", timetable.getStartTime()));
+            ngaykt.setText(String.format("%sh", timetable.getEndTime()));
         }
         return convertView;
     }

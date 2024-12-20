@@ -7,7 +7,7 @@ import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 
 import com.haruma.app.BR;
-import com.haruma.app.dto.DatabaseHelper;
+import com.haruma.app.utility.DatabaseHelper;
 import com.haruma.app.model.Callback;
 import com.haruma.app.model.User;
 import com.haruma.app.service.ExceptionHelper;

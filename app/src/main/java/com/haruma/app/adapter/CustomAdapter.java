@@ -16,27 +16,27 @@ import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.haruma.app.R;
-import com.haruma.app.dto.DatabaseHelper;
+import com.haruma.app.model.Timetable;
+import com.haruma.app.utility.DatabaseHelper;
 import com.haruma.app.model.ChangeCallback;
-import com.haruma.app.model.Diary;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class CustomAdapter extends ArrayAdapter<Diary> {
+public class CustomAdapter extends ArrayAdapter<Timetable> {
     private final Context context;
     private final int mResource;
     private final Map<String, ChangeCallback> callback;
 
-    public CustomAdapter(@NonNull Context context, int resource, @NonNull List<Diary> objects, Map<String, ChangeCallback> callback) {
+    public CustomAdapter(@NonNull Context context, int resource, @NonNull List<Timetable> objects, Map<String, ChangeCallback> callback) {
         super(context, resource, objects);
         this.context = context;
         this.mResource = resource;
         this.callback = callback;
     }
 
-    public void setList(List<Diary> list) {
+    public void setList(List<Timetable> list) {
         this.clear();
         this.addAll(list);
     }
@@ -48,7 +48,7 @@ public class CustomAdapter extends ArrayAdapter<Diary> {
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(mResource, parent, false);
         }
-        Diary diary = getItem(position);
+        Timetable timetable = getItem(position);
         TextView tenhd = convertView.findViewById(R.id.tvTenhd);
         TextView ngay = convertView.findViewById(R.id.tvNgay);
         TextView ngaybd = convertView.findViewById(R.id.tvNgaybd);
@@ -60,33 +60,33 @@ public class CustomAdapter extends ArrayAdapter<Diary> {
             popupMenu.getMenuInflater().inflate(R.menu.option_menu, popupMenu.getMenu());
             popupMenu.setOnMenuItemClickListener(item -> {
                 if (item.getItemId() == R.id.btnSua) {
-                    assert diary != null;
-                    Objects.requireNonNull(this.callback.get("onChange")).run(diary.getDiaryId());
+                    assert timetable != null;
+                    Objects.requireNonNull(this.callback.get("onChange")).run(timetable.getTimeTableId());
                 } else if (item.getItemId() == R.id.btnXoa) {
-                    assert diary != null;
-                    Objects.requireNonNull(this.callback.get("onDelete")).run(diary.getDiaryId());
+                    assert timetable != null;
+                    Objects.requireNonNull(this.callback.get("onDelete")).run(timetable.getTimeTableId());
                 } else if (item.getItemId() == R.id.btnXemChiTiet) {
-                    assert diary != null;
-                    Objects.requireNonNull(this.callback.get("onDetail")).run(diary.getDiaryId());
+                    assert timetable != null;
+                    Objects.requireNonNull(this.callback.get("onDetail")).run(timetable.getTimeTableId());
                 }
                 return true;
             });
             popupMenu.show();
         });
-        if (diary != null) {
-            tenhd.setText(diary.getName());
-            ngay.setText(diary.getDay());
-            ngaybd.setText(String.format("%sh", diary.getStartTime()));
-            ngaykt.setText(String.format("%sh", diary.getEndTime()));
+        if (timetable != null) {
+            tenhd.setText(timetable.getName());
+            ngay.setText(timetable.getDay());
+            ngaybd.setText(String.format("%sh", timetable.getStartTime()));
+            ngaykt.setText(String.format("%sh", timetable.getEndTime()));
             chkStatus.setOnCheckedChangeListener(null);
-            chkStatus.setChecked(diary.getStatus());
+            chkStatus.setChecked(timetable.getStatus());
             chkStatus.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 try {
                     DatabaseHelper db = new DatabaseHelper(this.context);
-                    db.updateDiary(diary.getDiaryId(), diary.getName(), diary.getDay(), diary.getNote(), diary.getStartTime(), diary.getEndTime(), isChecked);
-                    diary.setStatus(isChecked);
-                    Toast.makeText(this.context, String.format("Đã cập nhật trạng thái của nhật ký %d", diary.getDiaryId()), Toast.LENGTH_LONG).show();
-                    this.setList(db.getAllDiaries());
+                    db.updateTimeTable(timetable.getTimeTableId(), timetable.getName(), timetable.getDay(), timetable.getNote(), timetable.getStartTime(), timetable.getEndTime(), isChecked);
+                    timetable.setStatus(isChecked);
+                    Toast.makeText(this.context, String.format("Đã cập nhật trạng thái của thời gian biểu %d", timetable.getTimeTableId()), Toast.LENGTH_LONG).show();
+                    this.setList(db.getAllTimeTable());
                     this.notifyDataSetChanged();
                 } catch (Exception ex) {
                     Toast.makeText(this.context, ex.getMessage(), Toast.LENGTH_LONG).show();

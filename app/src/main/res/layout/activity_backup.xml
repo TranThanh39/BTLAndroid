@@ -3,12 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
-    tools:context=".view.BackupDiary">
+    tools:context=".view.BackupActivity">
 
     <data>
         <variable
-            name="backupDiaryViewModel"
-            type="com.haruma.app.viewmodel.BackupDiaryViewModel" />
+            name="backupViewModel"
+            type="com.haruma.app.viewmodel.BackupViewModel" />
     </data>
 
     <LinearLayout

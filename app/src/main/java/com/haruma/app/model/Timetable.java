@@ -1,7 +1,7 @@
 package com.haruma.app.model;
 
-public class Diary {
-    private int diaryId;
+public class Timetable {
+    private int timeTableId;
     private String name;
     private String day;
     private String note;
@@ -10,11 +10,11 @@ public class Diary {
     private int userId;
     private boolean status;
 
-    public Diary() {
+    public Timetable() {
     }
 
-    public Diary(int diaryId, String name, String day, String note, String startTime, String endTime, int userId, int status) {
-        this.diaryId = diaryId;
+    public Timetable(int timeTableId, String name, String day, String note, String startTime, String endTime, int userId, int status) {
+        this.timeTableId = timeTableId;
         this.name = name;
         this.day = day;
         this.note = note;
@@ -24,8 +24,8 @@ public class Diary {
         this.status = status != 0;
     }
 
-    public int getDiaryId() {
-        return diaryId;
+    public int getTimeTableId() {
+        return timeTableId;
     }
 
     public String getName() {
@@ -52,8 +52,8 @@ public class Diary {
         return userId;
     }
 
-    public void setDiaryId(int diaryId) {
-        this.diaryId = diaryId;
+    public void setTimeTableId(int timeTableId) {
+        this.timeTableId = timeTableId;
     }
 
     public void setName(String name) {
@@ -86,17 +86,6 @@ public class Diary {
 
     public void setStatus(Boolean status) {
         this.status = status;
-    }
-
-    @Override
-    public String toString() {
-        String tmp="Chua hoan thanh";
-        if (status) tmp="Da hoan thanh";
-        return "Tên công việc: " + name +
-                "\t\tNgày khởi tạo: " + day + '\n' +
-                "Bắt đầu: " + startTime +
-                "\t\tKết thúc: " + endTime+'\n'
-                 + "Trạng thái: " +tmp;
     }
 }
 

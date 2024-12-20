@@ -27,12 +27,12 @@ import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 
 import com.haruma.app.R;
-import com.haruma.app.databinding.ActivityBackupDiaryBinding;
+import com.haruma.app.databinding.ActivityBackupBinding;
 import com.haruma.app.service.FileHelper;
 import com.haruma.app.service.StorageHelper;
-import com.haruma.app.viewmodel.BackupDiaryViewModel;
+import com.haruma.app.viewmodel.BackupViewModel;
 
-public class BackupDiary extends AppCompatActivity {
+public class BackupActivity extends AppCompatActivity {
     private ActivityResultLauncher<Intent> pickFileLauncher;
     private ActivityResultLauncher<Intent> saveFileLauncher;
     private ActivityResultLauncher<Intent> storagePermissionLauncher;
@@ -42,11 +42,11 @@ public class BackupDiary extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_backup_diary);
-        ActivityBackupDiaryBinding mainBinding = DataBindingUtil.setContentView(this,
-                R.layout.activity_backup_diary);
-        BackupDiaryViewModel viewModel = new BackupDiaryViewModel(getApplication());
-        mainBinding.setBackupDiaryViewModel(viewModel);
+        setContentView(R.layout.activity_backup);
+        ActivityBackupBinding mainBinding = DataBindingUtil.setContentView(this,
+                R.layout.activity_backup);
+        BackupViewModel viewModel = new BackupViewModel(getApplication());
+        mainBinding.setBackupViewModel(viewModel);
         mainBinding.setLifecycleOwner(this);
         pickFileLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -55,8 +55,8 @@ public class BackupDiary extends AppCompatActivity {
                         Intent data = result.getData();
                         if (data != null) {
                             new AlertDialog.Builder(this)
-                                    .setMessage("Nếu bạn xác nhận, toàn bộ nhật ký hiện tại sẽ bị xóa sổ và tạo lại nhật kí mới")
-                                    .setTitle("Bạn có muốn sửa toàn bộ nhật ký?")
+                                    .setMessage("Nếu bạn xác nhận, toàn bộ thời gian biểu hiện tại sẽ bị xóa sổ và tạo lại thời gian biểu hiện tại")
+                                    .setTitle("Bạn có muốn sửa toàn bộ thời gian biểu hiện tại?")
                                     .setPositiveButton("Có", (dialog, which) -> {
                                         Uri fileUri = data.getData();
                                         if (fileUri != null) {

@@ -26,7 +26,7 @@
             android:elevation="4dp"
             android:theme="?attr/actionBarTheme"
             android:popupTheme="?attr/actionBarPopupTheme"
-            android:title="Thêm Hoạt Động"
+            android:title="Sửa thời gian biểu"
             android:titleTextColor="@android:color/white" />
 
         <androidx.cardview.widget.CardView
@@ -64,7 +64,7 @@
                         android:layout_weight="1"
                         android:text="@{editViewModel.id}"
                         android:enabled="false"
-                        android:hint="Nhập tên hoạt động" />
+                        android:hint="Nhập tên thời gian biểu" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -86,29 +86,39 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@={editViewModel.name}"
-                        android:hint="Nhập tên hoạt động" />
+                        android:hint="Nhập tên thời gian biểu" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
+                    android:orientation="horizontal"
                     android:gravity="center_vertical"
                     android:layout_marginBottom="8dp">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Ngày: "
                         android:layout_marginEnd="8dp" />
 
                     <EditText
-                        android:layout_width="match_parent"
+                        android:id="@+id/edtDate"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@={editViewModel.date}"
                         android:hint="Ngày (DD/MM/YYYY)"
-                        android:inputType="date" />
+                        android:inputType="none"
+                        android:focusable="false"
+                        android:clickable="true" />
+
+                    <Button
+                        android:id="@+id/btnPickDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:text="Chọn" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -182,7 +192,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:onClick="@{() -> editViewModel.onEdit()}"
-                    android:text="Sửa hoạt động"
+                    android:text="Sửa thời gian biểu"
                     android:layout_marginTop="16dp" />
 
                 <Button

@@ -14,9 +14,9 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.haruma.app.dto.DatabaseHelper;
-import com.haruma.app.dto.UserSessionManager;
-import com.haruma.app.model.Diary;
+import com.haruma.app.model.Timetable;
+import com.haruma.app.utility.DatabaseHelper;
+import com.haruma.app.utility.UserSessionManager;
 import com.haruma.app.service.JsonHelper;
 import com.haruma.app.service.UriHelper;
 
@@ -25,18 +25,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class BackupDiaryViewModel extends AndroidViewModel {
+public class BackupViewModel extends AndroidViewModel {
 
     private final DatabaseHelper databaseHelper;
 
-    private final MutableLiveData<String> permissionStatus = new MutableLiveData<>();
+    private final MutableLiveData<String> permissionStatus;
 
     private final Context context;
 
 
 
-    public BackupDiaryViewModel(Application application) {
+    public BackupViewModel(Application application) {
         super(application);
+        this.permissionStatus = new MutableLiveData<>();
         this.context = application.getApplicationContext();
         this.databaseHelper = new DatabaseHelper(this.context);
     }
@@ -46,44 +47,43 @@ public class BackupDiaryViewModel extends AndroidViewModel {
         try {
             String filePath = UriHelper.resolveUri(context, fileUri);
             List<Map<String, Object>> myList = JsonHelper.readJson(filePath);
-            this.onChangeDiary(makeList(myList));
-            Toast.makeText(this.context, String.format("Đã thêm %d nhật ký vào cơ sở dữ liệu", myList.size()), Toast.LENGTH_LONG).show();
+            this.onChangeTimetable(makeList(myList));
+            Toast.makeText(this.context, String.format("Đã thêm %d thời gian biểu vào cơ sở dữ liệu", myList.size()), Toast.LENGTH_LONG).show();
         } catch (Exception e) {
             Toast.makeText(this.context, e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
-    private List<Diary> makeList(List<Map<String, Object>> rawList) {
-        List<Diary> diaryList = new ArrayList<>();
+    private List<Timetable> makeList(List<Map<String, Object>> rawList) {
+        List<Timetable> timetableList = new ArrayList<>();
         for (Map<String, Object> rawEntry : rawList) {
-            Diary diary = new Diary();
-            diary.setDiaryId(((Double) Objects.requireNonNull(rawEntry.get("diaryId"))).intValue());
-            diary.setDay((String) rawEntry.get("day"));
-            diary.setName((String) rawEntry.get("name"));
-            diary.setNote((String) rawEntry.get("note"));
-            diary.setStartTime((String) rawEntry.get("startTime"));
-            diary.setEndTime((String) rawEntry.get("endTime"));
-            diary.setUserId(((Double) Objects.requireNonNull(rawEntry.get("userId"))).intValue());
-            diaryList.add(diary);
+            Timetable timetable = new Timetable();
+            timetable.setTimeTableId(((Double) Objects.requireNonNull(rawEntry.get("timeTableId"))).intValue());
+            timetable.setDay((String) rawEntry.get("day"));
+            timetable.setName((String) rawEntry.get("name"));
+            timetable.setNote((String) rawEntry.get("note"));
+            timetable.setStartTime((String) rawEntry.get("startTime"));
+            timetable.setEndTime((String) rawEntry.get("endTime"));
+            timetable.setUserId(((Double) Objects.requireNonNull(rawEntry.get("userId"))).intValue());
+            timetableList.add(timetable);
         }
-
-        return diaryList;
+        return timetableList;
     }
 
 
     public void writeJson(Context context, Uri fileUri) {
         try {
-            JsonHelper.writeJson(UriHelper.resolveUri(context, fileUri), databaseHelper.getAllDiaries());
+            JsonHelper.writeJson(UriHelper.resolveUri(context, fileUri), databaseHelper.getAllTimeTable());
             Toast.makeText(this.context, "Sao lưu dữ liệu thành công", Toast.LENGTH_LONG).show();
         } catch (Exception e) {
             Toast.makeText(this.context, e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
-    public void onChangeDiary(List<Diary> diaries) {
-        this.databaseHelper.clearDiary();
-        for (Diary d : diaries) {
-            this.databaseHelper.addDiary(d.getName(), d.getDay(), d.getNote(), d.getStartTime(), d.getEndTime(), d.getStatus(),
+    public void onChangeTimetable(List<Timetable> timetableList) {
+        this.databaseHelper.clearTimeTable();
+        for (Timetable t : timetableList) {
+            this.databaseHelper.addTimeTable(t.getName(), t.getDay(), t.getNote(), t.getStartTime(), t.getEndTime(), t.getStatus(),
                     UserSessionManager.getInstance().getCurrentUser().getUserId());
         }
     }

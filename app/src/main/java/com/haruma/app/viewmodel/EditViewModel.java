@@ -7,10 +7,9 @@ import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 
 import com.haruma.app.BR;
-import com.haruma.app.dto.DatabaseHelper;
-import com.haruma.app.dto.UserSessionManager;
+import com.haruma.app.utility.DatabaseHelper;
 import com.haruma.app.model.Callback;
-import com.haruma.app.model.Diary;
+import com.haruma.app.model.Timetable;
 
 import java.util.Map;
 import java.util.Objects;
@@ -25,7 +24,7 @@ public class EditViewModel extends BaseObservable {
 
     private final Context context;
 
-    private Diary diary;
+    private Timetable timeTable;
 
     private DatabaseHelper db;
 
@@ -35,21 +34,21 @@ public class EditViewModel extends BaseObservable {
         this.context = context;
         this.callback = callback;
         this.db = new DatabaseHelper(this.context);
-        this.diary = db.findDiaryById(id);
+        this.timeTable = db.findTimeTableById(id);
         setValue();
     }
 
     private void setValue() {
-        setName(diary.getName());
-        setNote(diary.getNote());
-        setDate(diary.getDay());
-        setEndTime(diary.getEndTime());
-        setStartTime(diary.getStartTime());
+        setName(timeTable.getName());
+        setNote(timeTable.getNote());
+        setDate(timeTable.getDay());
+        setEndTime(timeTable.getEndTime());
+        setStartTime(timeTable.getStartTime());
     }
 
     @Bindable
     public String getId() {
-        return String.valueOf(this.diary.getDiaryId());
+        return String.valueOf(this.timeTable.getTimeTableId());
     }
 
     @Bindable
@@ -117,8 +116,8 @@ public class EditViewModel extends BaseObservable {
                     makeToast("Thời gian bắt đầu phải nhỏ hơn thời gian kết thúc.");
                     return;
                 }
-                db.updateDiary(diary.getDiaryId(), name, date, note, startTime, endTime, diary.getStatus());
-                makeToast("Sửa hoạt động thành công");
+                db.updateTimeTable(timeTable.getTimeTableId(), name, date, note, startTime, endTime, timeTable.getStatus());
+                makeToast("Sửa thời gian biểu thành công");
                 Objects.requireNonNull(this.callback.get("onEdit")).run();
 
             } else {

@@ -5,24 +5,24 @@ import android.content.Context;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 
-import com.haruma.app.dto.DatabaseHelper;
+import com.haruma.app.utility.DatabaseHelper;
 import com.haruma.app.model.Callback;
-import com.haruma.app.model.Diary;
+import com.haruma.app.model.Timetable;
 
-public class DetailActivityViewModel extends BaseObservable {
+public class DetailViewModel extends BaseObservable {
 
     private final Context context;
 
-    private final Diary diary;
+    private final Timetable timetable;
 
     private final DatabaseHelper db;
 
     private Callback callback;
 
-    public DetailActivityViewModel(Context context, int id, Callback callback) {
+    public DetailViewModel(Context context, int id, Callback callback) {
         this.context = context;
         this.db = new DatabaseHelper(this.context);
-        this.diary = db.findDiaryById(id);
+        this.timetable = db.findTimeTableById(id);
         this.callback = callback;
     }
 
@@ -31,8 +31,8 @@ public class DetailActivityViewModel extends BaseObservable {
     }
 
     @Bindable
-    public Diary getDiary() {
-        return this.diary;
+    public Timetable getTimetable() {
+        return this.timetable;
     }
 
 }
