@@ -30,6 +30,7 @@ import com.haruma.app.model.Timetable;
 
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Calendar;
@@ -46,7 +47,7 @@ public class DashboardFragment extends Fragment {
     public TextView tm;
     public TextView dh;
     public TextView ch;
-
+    public PieChart pieChart;
 
 
     @Override
@@ -61,7 +62,7 @@ public class DashboardFragment extends Fragment {
                                                    //num2 là phần trăm công việc chưa hoàn thành
 
         //Khởi tạo biểu đồ
-        PieChart pieChart = root.findViewById(R.id.pieChart);
+
 
         //Tạo biểu đồ
         ArrayList<PieEntry> pieEntries = new ArrayList<>();
@@ -97,9 +98,26 @@ public class DashboardFragment extends Fragment {
         //Lấy ngày đầu tiên của tuần
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
         Date startOfWeek = calendar.getTime();
 
+        Calendar today = Calendar.getInstance();
+        today.set(Calendar.MINUTE, 0);
+        today.set(Calendar.SECOND, 0);
+        today.set(Calendar.HOUR_OF_DAY, 0);
+        today.set(Calendar.MILLISECOND, 0);
+        Date today_date=today.getTime();
+
+        if (today_date.equals(startOfWeek)){
+            calendar.add(Calendar.DATE, -7);
+            startOfWeek = calendar.getTime();
+        }
         //Lấy ngày cuối cùng của tuần
+        calendar.add(Calendar.DATE, 1);
+        startOfWeek=calendar.getTime();
         calendar.add(Calendar.DATE, 6);
         Date endOfWeek = calendar.getTime();
 
@@ -174,10 +192,6 @@ public class DashboardFragment extends Fragment {
         }
 
         DashboardAdapter adapter = new DashboardAdapter(activity, R.layout.dashboard_list_tile, di2);
-        if (di2.isEmpty()) {
-            root.findViewById(R.id.pieChart).setVisibility(View.GONE);
-            return;
-        }
         ListView lv = root.findViewById(R.id.listview);
         lv.setAdapter(adapter);
         float done=0;
@@ -188,6 +202,13 @@ public class DashboardFragment extends Fragment {
         }
         dh.setText("Số việc thực hiện: "+String.valueOf((int)done));
         ch.setText("Số việc không thực hiện: "+String.valueOf(di2.size()-(int)done));
+        if(di2.isEmpty()){
+            pieChart.setVisibility(View.INVISIBLE);
+            return;
+        }
+        else{
+            pieChart.setVisibility(View.VISIBLE);
+        }
         float tmp = done/di2.size();
         showChart(tmp, 1-tmp);
     }
@@ -203,7 +224,9 @@ public class DashboardFragment extends Fragment {
         tm=root.findViewById(R.id.textMode);
         dh=root.findViewById(R.id.dahoanthanh);
         ch=root.findViewById(R.id.chuahoanthanh);
+        pieChart = root.findViewById(R.id.pieChart);
         showListTimetable(0);
+
         return root;
     }
     @Override
